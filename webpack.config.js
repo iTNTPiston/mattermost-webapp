@@ -154,7 +154,7 @@ var config = {
         rules: [
             {
                 test: /worker\.(js|jsx)$/,
-                include: [path.resolve(__dirname, 'casualchat/tdweb')],
+                include: [path.resolve(__dirname, 'non_npm_dependencies/tdweb')],
                 use: [
                     {
                         loader: 'worker-loader',
@@ -176,7 +176,7 @@ var config = {
 
             {
                 test: /\.(wasm|mem)$/,
-                include: [path.resolve(__dirname, 'casualchat/tdweb/prebuilt/release')],
+                include: [path.resolve(__dirname, 'non_npm_dependencies/tdweb/prebuilt/release')],
                 type: 'javascript/auto',
                 use: [
                     {
