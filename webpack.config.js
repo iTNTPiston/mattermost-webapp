@@ -150,7 +150,10 @@ var config = {
         child_process: 'empty',
     },
     module: {
-        noParse: /td_asmjs\.js$/,
+        noParse: [
+            /td_asmjs\.js$/,
+            /td_wasm\.js$/
+        ],
         rules: [
             {
                 test: /worker\.(js|jsx)$/,
