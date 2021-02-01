@@ -24,10 +24,18 @@ fix-style: node_modules ## Fix JS file ESLint issues
 
 	npm run fix
 
+ignore-tdweb-prebuilt:
+	mv -T non_npm_dependencies/tdweb/prebuilt/release/td_asmjs.js non_npm_dependencies/tdweb/prebuilt/release/td_asmjs.js_ignore 
+	mv -T non_npm_dependencies/tdweb/prebuilt/release/td_wasm.js non_npm_dependencies/tdweb/prebuilt/release/td_wasm.js_ignore 
+
 check-types: node_modules ## Checks TS file for TypeScript confirmity
 	@echo Checking for TypeScript compliance
 
 	npm run check-types
+
+unignore-tdweb-prebuilt:
+	mv -T non_npm_dependencies/tdweb/prebuilt/release/td_asmjs.js_ignore non_npm_dependencies/tdweb/prebuilt/release/td_asmjs.js
+	mv -T non_npm_dependencies/tdweb/prebuilt/release/td_wasm.js_ignore  non_npm_dependencies/tdweb/prebuilt/release/td_wasm.js
 
 test: node_modules ## Runs tests
 	@echo Running jest unit/component testing
