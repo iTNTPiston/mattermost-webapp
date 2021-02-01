@@ -240,7 +240,7 @@
   "scripts": {
     "check": "eslint --ext .js --ext .jsx --ext tsx --ext ts . --quiet --cache",
     "fix": "eslint --ext .js --ext .jsx --ext tsx --ext ts . --quiet --fix --cache",
-    "build": "cross-env NODE_ENV=production webpack --display-error-details --verbose",
+    "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=3072 webpack --display-error-details --verbose",
     "run": "webpack --progress --watch",
     "dev-server": "webpack-dev-server",
     "test": "cross-env NODE_ICU_DATA=node_modules/full-icu TZ=Etc/UTC jest --forceExit --detectOpenHandles",
