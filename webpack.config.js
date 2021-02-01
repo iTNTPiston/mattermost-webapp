@@ -152,7 +152,7 @@ var config = {
     module: {
         noParse: [
             /td_asmjs\.js$/,
-            /td_wasm\.js$/
+            /td_wasm\.js$/,
         ],
         rules: [
             {
