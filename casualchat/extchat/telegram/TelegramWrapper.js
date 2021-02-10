@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 import TdClient from 'tdweb';
-import "casualchat/include_prebuilt.js_tsignore";
+import 'casualchat/include_prebuilt.js_tsignore';
 
 //const TdClient = require("tdweb");
 let client;
