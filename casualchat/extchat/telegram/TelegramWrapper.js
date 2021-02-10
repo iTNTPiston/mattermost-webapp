@@ -1,20 +1,23 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-import TdClient from 'casualchat/tdweb';
+import TdClient from 'tdweb';
+import 'casualchat/include_prebuilt.js_tsignore';
 
+//const TdClient = require("tdweb");
 let client;
 let isReadyToSendCode = false;
 
-export function startClient(phoneNumber,whackyLinkCallback) {
+export function startClient(phoneNumber, whackyLinkCallback) {
     client = new TdClient({
-        onUpdate: createUpdateFunction(phoneNumber,whackyLinkCallback),
-        jsLogVerbosityLevel: "INFO",
-        instanceName: "casualchat-tdweb",
-        isBackground: true
+        onUpdate: createUpdateFunction(phoneNumber, whackyLinkCallback),
+        jsLogVerbosityLevel: 'INFO',
+        instanceName: 'casualchat-tdweb',
+        isBackground: true,
     });
+
     //start();
 }
-export const start = async () =>{
+export const start = async () => {
     /* eslint-disable no-console */
     console.log('starting');
     const result = await send({
@@ -25,7 +28,6 @@ export const start = async () =>{
     /* eslint-disable no-console */
     console.log(result);
 };
-
 
 export async function sendVerificationCode(code) {
     if (!isReadyToSendCode) {
@@ -50,7 +52,7 @@ const send = async (messageObject) => {
     return client.send(messageObject);
 };
 
-const createUpdateFunction = (phoneNumber,whackyLinkCallback) => {
+const createUpdateFunction = (phoneNumber, whackyLinkCallback) => {
     return (updateObject) => {
         console.log(updateObject);
         if (updateObject['@type'] === 'updateAuthorizationState') {

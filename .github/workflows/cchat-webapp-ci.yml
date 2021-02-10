@@ -109,7 +109,8 @@ jobs:
         run: npm ci
       
       - name: Check Type
-        run: npm run check-types
+        run: |
+          npm run check-types
 
   test-webapp:
     name: Test Webapp

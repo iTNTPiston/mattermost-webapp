@@ -25,7 +25,9 @@ const DEV = targetIsRun || targetIsStats || targetIsDevServer;
 
 const STANDARD_EXCLUDE = [
     path.join(__dirname, 'node_modules'),
-    path.join(__dirname, 'casualchat/tdweb/prebuilt'),
+    path.join(__dirname, 'non_npm_dependencies'),
+    /tdweb\/files\/.*worker\.js$/,
+    /\.(mem|wasm)$/,
 ];
 
 // react-hot-loader requires eval
@@ -143,47 +145,58 @@ var config = {
     },
     node: {
         dgram: 'empty',
-        fs: 'empty',
         net: 'empty',
         tls: 'empty',
         crypto: 'empty',
         child_process: 'empty',
     },
     module: {
-        noParse: /td_asmjs\.js$/,
+
+        // noParse: [
+        //     /tdweb\/files\/.*worker\.js$/,
+        //     /\.(mem|wasm)$/,
+        // ],
         rules: [
+
+            // {
+            //     test: /worker\.(js|jsx)$/,
+            //     include: [path.resolve(__dirname, 'non_npm_dependencies/tdweb')],
+            //     use: [
+            //         {
+            //             loader: 'worker-loader',
+            //         },
+            //     ],
+            // },
             {
-                test: /worker\.(js|jsx)$/,
-                include: [path.resolve(__dirname, 'casualchat/tdweb')],
-                use: [
-                    {
-                        loader: 'worker-loader',
-                    },
-                ],
-            },
-            {
-                test: /\.(js|jsx|ts|tsx)?$/,
+                test: /\.(js|jsx|ts|tsx|js_tsignore)?$/,
+
                 exclude: STANDARD_EXCLUDE,
                 use: {
                     loader: 'babel-loader',
                     options: {
                         cacheDirectory: true,
 
+                        // ignore: [
+                        //     /prebuilt/
+                        // ],
                         // Babel configuration is in .babelrc because jest requires it to be there.
                     },
                 },
             },
-
             {
-                test: /\.(wasm|mem)$/,
-                include: [path.resolve(__dirname, 'casualchat/tdweb/prebuilt/release')],
+                test: /(\.(wasm|mem)|\.worker\.js)$/,
+                include: [path.resolve(__dirname, 'non_npm_dependencies/tdweb/files')],
                 type: 'javascript/auto',
                 use: [
                     {
                         loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                        },
                     },
                 ],
-            }, {
+            },
+            {
                 type: 'javascript/auto',
                 test: /\.json$/,
                 include: [
@@ -272,6 +285,7 @@ var config = {
     resolve: {
         modules: [
             'node_modules',
+            'non_npm_dependencies',
             path.resolve(__dirname),
         ],
         alias: {
