@@ -12,11 +12,11 @@ import {getBool} from 'mattermost-redux/selectors/entities/preferences';
 import {getPasswordConfig} from 'utils/utils.jsx';
 import {Preferences} from 'utils/constants';
 
-import {sendVerificationCode, startClient, logOut, start,pullContacts,receiveMessage,sendMessage} from 'casualchat/extchat/telegram/TelegramWrapper';
-
-import ExtChatTab from './user_settings_extchat.jsx';
+import {sendVerificationCode, startClient, logOut, start, pullContacts, receiveMessage, sendMessage} from 'casualchat/extchat/telegram/TelegramWrapper';
 
 import {getContactList} from 'casualchat/telegram_selector';
+
+import ExtChatTab from './user_settings_extchat.jsx';
 
 function mapStateToProps(state, ownProps) {
     const config = getConfig(state);
@@ -32,6 +32,7 @@ function mapStateToProps(state, ownProps) {
     const enableSaml = config.EnableSaml === 'true';
     const enableSignUpWithOffice365 = config.EnableSignUpWithOffice365 === 'true';
     const experimentalEnableAuthenticationTransfer = config.ExperimentalEnableAuthenticationTransfer === 'true';
+
     // const testSelector = test_selector(state);
     const testContactList = getContactList(state);
 
@@ -64,8 +65,8 @@ function mapDispatchToProps(dispatch) {
             startClient,
             logOut,
             start,
-            pullContacts:() => pullContacts(dispatch),
-            receiveMessage:() => receiveMessage(dispatch),
+            pullContacts: () => pullContacts(dispatch),
+            receiveMessage: () => receiveMessage(dispatch),
             sendMessage,
         },
     };

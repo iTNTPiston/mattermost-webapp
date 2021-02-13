@@ -59,11 +59,11 @@ export async function pullContacts(dispatch) {
     /* eslint-disable no-console */
     console.log(result);
     dispatch(
-        addTelegramUserToCasualChat(result.user_ids)
+        addTelegramUserToCasualChat(result.user_ids),
     );
 }
 
-export async function receiveMessage(dispatch){
+export async function receiveMessage() {
     console.log('Receive Messages');
     const result = await send({
         '@type': 'updateNewMessage',
@@ -71,32 +71,32 @@ export async function receiveMessage(dispatch){
     /* eslint-disable no-console */
     console.log('result');
     /* eslint-disable no-console */
-    console.log('sender:',result.message.sender.user_id);
-    console.log('message:',result.message.content.text.text);
+    console.log('sender:', result.message.sender.user_id);
+    console.log('message:', result.message.content.text.text);
+
     // dispatch(
     //     receiveMessageFromCasualChat(externalMessage,sender)
     // );
 }
 
-
-export async function sendMessage(dispatch){
+export async function sendMessage() {
     console.log('Send Messages');
-    const get_result = await send({
-        '@type':'createPrivateChat',
-        'user_id': 1359977993,
+    const getResult = await send({
+        '@type': 'createPrivateChat',
+        user_id: 1359977993,
     });
 
     console.log('result');
-    console.log(get_result);
+    console.log(getResult);
 
     const result = await send({
         '@type': 'sendMessage',
-        'chat_id': 1359977993,
-        'reply_to_message_id':0,
-        'disable_notifications':false,
-        'from_background':false,
-        'reply_markup':null,
-        'input_message_content': 
+        chat_id: 1359977993,
+        reply_to_message_id: 0,
+        disable_notifications: false,
+        from_background: false,
+        reply_markup: null,
+        input_message_content:
         {
             '@type': 'inputMessageText',
             text: {
@@ -104,16 +104,15 @@ export async function sendMessage(dispatch){
                 text: 'Test pjn',
                 entities: null,
             },
-            'disable_web_page_preview':false,
-            'clear_draft':false,
+            disable_web_page_preview: false,
+            clear_draft: false,
         },
     });
     /* eslint-disable no-console */
     console.log('result');
+    console.log(result);
     /* eslint-disable no-console */
 }
-
-
 
 const send = async (messageObject) => {
     return client.send(messageObject);

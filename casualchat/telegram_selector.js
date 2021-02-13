@@ -8,12 +8,10 @@
 //     return state;
 // };
 
-export const getContactList = (state) => {      
-    console.log("In selector: ",state);
+export const getContactList = (state) => {
     return state.telegram;
 };
 
 export const getExternalMessage = (state) => {
-    console.log("For getting message: ",state);
     return state.telegram;
-}
+};

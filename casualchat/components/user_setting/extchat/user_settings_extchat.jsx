@@ -65,6 +65,7 @@ export default class ExtChatTab extends React.PureComponent {
             sendVerificationCode: PropTypes.func.isRequired,
             startClient: PropTypes.func.isRequired,
             start: PropTypes.func.isRequired,
+            sendMessage: PropTypes.func.isRequired,
         }),
     }
 
@@ -231,7 +232,7 @@ export default class ExtChatTab extends React.PureComponent {
                             saving={false}
                             disabled={false}
                         />
-                                                
+
                         <SaveButton
                             defaultMessage={
                                 <FormattedMessage
