@@ -236,6 +236,19 @@ export default class ExtChatTab extends React.PureComponent {
                                
                             }}
                         />
+                                                
+                        <SaveButton
+                            defaultMessage={
+                                <FormattedMessage
+                                    id='user.settings.extchat.telegram.testButton'
+                                    defaultMessage='Test Button'
+                                />}
+                            saving={false}
+                            disabled={false}
+                            onClick={() => {
+                                this.props.telegram.pullContacts();
+                            }}
+                        />
                     </div>,
                 );
             }else{

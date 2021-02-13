@@ -4,9 +4,11 @@
 import plugins from './plugins';
 import views from './views';
 import storage from './storage';
+import telegram from 'casualchat/telegram_reducer';
 
 export default {
     views,
     plugins,
     storage,
+    telegram,
 };

@@ -1,6 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 import TdClient from 'casualchat/tdweb';
+import {addTelegramUserToCasualChat} from 'casualchat/actions/telegram_action';
 
 let client;
 let isReadyToSendCode = false;
@@ -44,6 +45,19 @@ export async function logOut() {
     console.log('result');
     /* eslint-disable no-console */
     console.log(result);
+}
+
+export async function pullContacts(dispatch) {
+    console.log('Pulling Contacts');
+    const result = await send({
+        '@type': 'getContacts',
+    });
+    /* eslint-disable no-console */
+    console.log('result');
+    /* eslint-disable no-console */
+    console.log(result);
+    // TODO: Use action to add result
+    addTelegramUserToCasualChat(result)(dispatch);
 }
 
 const send = async (messageObject) => {
@@ -131,4 +145,16 @@ const checkAuthenticationCode = async (code) => {
     /* eslint-disable no-console */
     console.log(result);
 };
+
+// const getContacts = async () => {
+//     /* eslint-disable no-console */
+//     console.log('Pulling Contacts');
+//     const result = await send({
+//         '@type': 'getContacts',
+//     });
+//     /* eslint-disable no-console */
+//     console.log('result');
+//     /* eslint-disable no-console */
+//     console.log(result);
+// };
 
