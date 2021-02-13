@@ -27,6 +27,7 @@
   "exclude": [
     "dist",
     "e2e",
-    "!node_modules/@types"
+    "!node_modules/@types",
+    "non_npm_dependencies"
   ]
 }

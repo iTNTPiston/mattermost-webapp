@@ -4,9 +4,8 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import {FormattedDate, FormattedMessage, FormattedTime} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 
-import Constants from 'utils/constants';
 import * as Utils from 'utils/utils.jsx';
 import SettingItemMax from 'components/setting_item_max.jsx';
 import SettingItemMin from 'components/setting_item_min';
@@ -209,9 +208,8 @@ export default class ExtChatTab extends React.PureComponent {
     createTelegramSection = () => {
         if (this.props.activeSection === SECTION_TELEGRAM) {
             const inputs = [];
-            let submit;
-                submit = this.submitPassword;
-            if(this.state.telegramWhackilyLinked){
+            const submit = this.submitPassword;
+            if (this.state.telegramWhackilyLinked) {
                 inputs.push(
                     <div
                         key='PhoneUpdateForm'
@@ -223,7 +221,7 @@ export default class ExtChatTab extends React.PureComponent {
                                 defaultMessage='You have linked your Telegram account'
                             />
                         </label>
-                        
+
                         <SaveButton
                             defaultMessage={
                                 <FormattedMessage
@@ -232,9 +230,6 @@ export default class ExtChatTab extends React.PureComponent {
                                 />}
                             saving={false}
                             disabled={false}
-                            onClick={() => {
-                               
-                            }}
                         />
                                                 
                         <SaveButton
@@ -251,7 +246,7 @@ export default class ExtChatTab extends React.PureComponent {
                         />
                     </div>,
                 );
-            }else{
+            } else {
                 inputs.push(
                     <div
                         key='PhoneUpdateForm'
@@ -283,8 +278,8 @@ export default class ExtChatTab extends React.PureComponent {
                             saving={false}
                             disabled={false}
                             onClick={() => {
-                                this.props.telegram.startClient(this.state.phoneNumber,()=>{
-                                    this.setState({telegramWhackilyLinked:true});
+                                this.props.telegram.startClient(this.state.phoneNumber, () => {
+                                    this.setState({telegramWhackilyLinked: true});
                                 });
                             }}
                         />
@@ -320,11 +315,11 @@ export default class ExtChatTab extends React.PureComponent {
                             saving={false}
                             disabled={false}
                             onClick={() => {
-                                if(this.state.code==="secretlylogout"){
+                                if (this.state.code === 'secretlylogout') {
                                     this.props.telegram.logOut();
-                                }else if(this.state.code==="secretlystart"){
+                                } else if (this.state.code === 'secretlystart') {
                                     this.props.telegram.start();
-                                }else{
+                                } else {
                                     this.props.telegram.sendVerificationCode(this.state.code);
                                 }
                             }}
@@ -332,8 +327,6 @@ export default class ExtChatTab extends React.PureComponent {
                     </div>,
                 );
             }
-            
-            
 
             return (
                 <SettingItemMax
@@ -427,10 +420,11 @@ export default class ExtChatTab extends React.PureComponent {
                         defaultMessage='Telegram'
                     />
                 }
-                describe={<FormattedMessage
-                                id='user.settings.extchat.telegram_describe'
-                                defaultMessage='Link your Mattermost account to your Telegram'
-                            />}
+                describe={
+                    <FormattedMessage
+                        id='user.settings.extchat.telegram_describe'
+                        defaultMessage='Link your Mattermost account to your Telegram'
+                    />}
                 section={SECTION_TELEGRAM}
                 updateSection={this.handleUpdateSection}
                 focused={true}

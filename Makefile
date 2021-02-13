@@ -24,10 +24,12 @@ fix-style: node_modules ## Fix JS file ESLint issues
 
 	npm run fix
 
+
 check-types: node_modules ## Checks TS file for TypeScript confirmity
 	@echo Checking for TypeScript compliance
 
 	npm run check-types
+
 
 test: node_modules ## Runs tests
 	@echo Running jest unit/component testing

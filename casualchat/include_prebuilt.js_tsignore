@@ -1,0 +1,5 @@
+import 'non_npm_dependencies/tdweb/files/1.1fc31e4745967c6309a8.worker.js';
+import 'non_npm_dependencies/tdweb/files/1fc31e4745967c6309a8.worker.js';
+import 'non_npm_dependencies/tdweb/files/2.1fc31e4745967c6309a8.worker.js';
+import 'non_npm_dependencies/tdweb/files/17a41ddff2187b27c374b5620842586b.mem';
+import 'non_npm_dependencies/tdweb/files/ebdcc98130b4f781eb8509d0303f605d.wasm';
