@@ -2,4 +2,4 @@ e2e/results
 storybook-static
 node_modules
 dist
-casualchat/tdweb
+non_npm_dependencies
