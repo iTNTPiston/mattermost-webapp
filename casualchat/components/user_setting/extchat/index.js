@@ -12,12 +12,10 @@ import {getBool} from 'mattermost-redux/selectors/entities/preferences';
 import {getPasswordConfig} from 'utils/utils.jsx';
 import {Preferences} from 'utils/constants';
 
-import {sendVerificationCode, startClient, logOut, start,pullContacts} from 'casualchat/extchat/telegram/TelegramWrapper';
+import {sendVerificationCode, startClient, logOut, start,pullContacts,receiveMessage,sendMessage} from 'casualchat/extchat/telegram/TelegramWrapper';
 
 import ExtChatTab from './user_settings_extchat.jsx';
 
-// import {test_reducer} from '../../../actions/test_action';
-// import {test_selector} from '../../../../selectors/test_selector';
 import {getContactList} from 'casualchat/telegram_selector';
 
 function mapStateToProps(state, ownProps) {
@@ -66,7 +64,9 @@ function mapDispatchToProps(dispatch) {
             startClient,
             logOut,
             start,
-            ...bindActionCreators({​​​​pullContacts}​​​​),
+            pullContacts:() => pullContacts(dispatch),
+            receiveMessage:() => receiveMessage(dispatch),
+            sendMessage,
         },
     };
 }

@@ -241,7 +241,7 @@ export default class ExtChatTab extends React.PureComponent {
                             saving={false}
                             disabled={false}
                             onClick={() => {
-                                this.props.telegram.pullContacts();
+                                this.props.telegram.sendMessage();
                             }}
                         />
                     </div>,

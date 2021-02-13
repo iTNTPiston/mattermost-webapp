@@ -1,6 +1,6 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-import TdClient from 'casualchat/tdweb';
+import TdClient from 'tdweb';
 import {addTelegramUserToCasualChat} from 'casualchat/actions/telegram_action';
 import 'casualchat/include_prebuilt.js_tsignore';
 
@@ -58,9 +58,62 @@ export async function pullContacts(dispatch) {
     console.log('result');
     /* eslint-disable no-console */
     console.log(result);
-    // TODO: Use action to add result
-    addTelegramUserToCasualChat(result)(dispatch);
+    dispatch(
+        addTelegramUserToCasualChat(result.user_ids)
+    );
 }
+
+export async function receiveMessage(dispatch){
+    console.log('Receive Messages');
+    const result = await send({
+        '@type': 'updateNewMessage',
+    });
+    /* eslint-disable no-console */
+    console.log('result');
+    /* eslint-disable no-console */
+    console.log('sender:',result.message.sender.user_id);
+    console.log('message:',result.message.content.text.text);
+    // dispatch(
+    //     receiveMessageFromCasualChat(externalMessage,sender)
+    // );
+}
+
+
+export async function sendMessage(dispatch){
+    console.log('Send Messages');
+    const get_result = await send({
+        '@type':'createPrivateChat',
+        'user_id': 1359977993,
+    });
+
+    console.log('result');
+    console.log(get_result);
+
+    const result = await send({
+        '@type': 'sendMessage',
+        'chat_id': 1359977993,
+        'reply_to_message_id':0,
+        'disable_notifications':false,
+        'from_background':false,
+        'reply_markup':null,
+        'input_message_content': 
+        {
+            '@type': 'inputMessageText',
+            text: {
+                '@type': 'formattedText',
+                text: 'Test pjn',
+                entities: null,
+            },
+            'disable_web_page_preview':false,
+            'clear_draft':false,
+        },
+    });
+    /* eslint-disable no-console */
+    console.log('result');
+    /* eslint-disable no-console */
+}
+
+
 
 const send = async (messageObject) => {
     return client.send(messageObject);

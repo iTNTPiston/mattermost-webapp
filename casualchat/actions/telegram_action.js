@@ -1,23 +1,32 @@
 
 import TelegramTypes from 'casualchat/action_types/telegram';
 
-// export function test_reducer() {
-//     return (dispatch) => {
-//         dispatch({
-//             type: "SYNC_CONTACT_LISTS",
-//             data: {},
-//         });
-//         return {data: true};
-//     };
-// }
-
-// TODO: Dispatch defined reducer state
 export function addTelegramUserToCasualChat(externalList) {
-    return (dispatch) => {
-        dispatch({
+    return {
             type: TelegramTypes.SYNC_CONTACT_LISTS,
             data: {externalList: externalList},
-        });
-        return {data:true};
-    };
+        };
+    
+}
+
+export function receiveMessageFromCasualChat(externalMessage,sender) {
+    return {
+            type: TelegramTypes.RECEIVE_MESSAGE,
+            data: {
+                externalMessage: externalMessage,
+                sender: sender
+            },
+        };
+    
+}
+
+export function sendMessageToCasualChat(chatID,messageContent) {
+    return {
+            type: TelegramTypes.SEND_MESSAGE,
+            data: {
+                chatID: chatID,
+                messageContent: messageContent
+            },
+        };
+    
 }
