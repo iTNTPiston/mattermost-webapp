@@ -35,6 +35,9 @@ import {setModalSearchTerm} from 'actions/views/search';
 
 import {GlobalState} from 'types/store';
 
+import {isLinked, getContactList} from 'casualchat/telegram_selector';
+import {pullContacts} from 'casualchat/extchat/telegram/TelegramWrapper';
+
 import MoreDirectChannels from './more_direct_channels';
 
 type OwnProps = {
@@ -54,6 +57,7 @@ function mapStateToProps(state: GlobalState, ownProps: OwnProps) {
     const searchTerm = state.views.search.modalSearch;
 
     let users;
+    const externalUsers = getContactList(state);
     if (searchTerm) {
         if (restrictDirectMessage === 'any') {
             users = searchProfilesSelector(state, searchTerm, false);
@@ -84,6 +88,8 @@ function mapStateToProps(state: GlobalState, ownProps: OwnProps) {
         currentUserId,
         restrictDirectMessage,
         totalCount: stats.total_users_count,
+        isLinked: isLinked(state),
+        externalUsers,
     };
 }
 
@@ -139,6 +145,9 @@ function mapDispatchToProps(dispatch: Dispatch) {
             searchGroupChannels,
             setModalSearchTerm,
         }, dispatch),
+        telegram: {
+            pullContacts: () => pullContacts(dispatch),
+        },
     };
 }
 
