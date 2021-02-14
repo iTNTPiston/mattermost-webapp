@@ -18,4 +18,4 @@ export const getExternalMessage = (state) => {
 
 export const isLinked = (state) => {
     return state.telegram.isLinked;
-}
+};

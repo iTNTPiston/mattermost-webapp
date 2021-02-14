@@ -20,18 +20,15 @@ import GuestBadge from 'components/widgets/badges/guest_badge';
 import BotBadge from 'components/widgets/badges/bot_badge';
 
 import GroupMessageOption from './group_message_option';
-import { type } from 'os';
 
 const USERS_PER_PAGE = 50;
 const MAX_SELECTABLE_VALUES = Constants.MAX_USERS_IN_GM - 1;
 
 type UserProfileValue = (UserProfile & Value);
 type GroupChannelValue = (Channel & Value & {profiles: UserProfile[]});
-type ExternalUserValue = Value & {externalId: number};
-
+type ExternalUserValue = Value & {externalId: number; delete_at: number};
 
 type OptionType = UserProfileValue | GroupChannelValue | ExternalUserValue;
-
 
 type Props = {
     currentUserId: string;
@@ -81,7 +78,7 @@ type Props = {
         }>;
     };
     telegram: {
-        pullContacts: ()=> Promise<any>;
+        pullContacts: () => Promise<any>;
     };
 }
 
@@ -177,7 +174,7 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
     }
 
     componentDidMount() {
-        if(this.props.isLinked){
+        if (this.props.isLinked) {
             this.props.telegram.pullContacts();
         }
     }
@@ -255,7 +252,7 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
         if (Array.isArray(value)) {
             this.addUsers(value);
             this.addExternalUsers(value);
-        } else if (typeof(value) != "number" && 'profiles' in value) {
+        } else if (typeof (value) != 'number' && 'profiles' in value) {
             this.addUsers(value.profiles);
         } else {
             const values = Object.assign([], this.state.values);
@@ -283,19 +280,20 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
 
     addExternalUsers = (externalUsers: number[]) => {
         const values: OptionType[] = Object.assign([], this.state.values);
-        const existingUserIds = values.filter(v => "externalId" in v).map(v => (v as ExternalUserValue).externalId);
+        const existingUserIds = values.filter((v) => 'externalId' in v).map((v) => (v as ExternalUserValue).externalId);
         for (const user of externalUsers) {
             if (existingUserIds.indexOf(user) !== -1) {
                 continue;
             }
-            let ext_user = { 
-                externalId: user,   
-                display_name: user + "",
-                id: user + "",
-                label: user + "",
-                value: user + "",
+            const extUser = {
+                externalId: user,
+                display_name: String(user),
+                id: String(user),
+                label: String(user),
+                value: String(user),
+                delete_at: -1,
             };
-            values.push(ext_user as OptionType);
+            values.push(extUser as OptionType);
         }
 
         this.setState({values});
@@ -354,7 +352,6 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
                 />
             );
         }
-
 
         const displayName = displayEntireNameForUser(option);
 
@@ -529,7 +526,6 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
                 saving={this.state.saving}
                 loading={this.state.loadingUsers}
                 users={this.props.users}
-                externalUsers = {this.props.externalUsers}
                 totalCount={this.props.totalCount}
                 placeholderText={localizeMessage('multiselect.placeholder', 'Search and add members')}
             />
