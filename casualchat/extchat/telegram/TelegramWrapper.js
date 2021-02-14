@@ -1,6 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 import TdClient from 'tdweb';
+import {addTelegramUserToCasualChat} from 'casualchat/actions/telegram_action';
 import 'casualchat/include_prebuilt.js_tsignore';
 
 //const TdClient = require("tdweb");
@@ -46,6 +47,71 @@ export async function logOut() {
     console.log('result');
     /* eslint-disable no-console */
     console.log(result);
+}
+
+export async function pullContacts(dispatch) {
+    console.log('Pulling Contacts');
+    const result = await send({
+        '@type': 'getContacts',
+    });
+    /* eslint-disable no-console */
+    console.log('result');
+    /* eslint-disable no-console */
+    console.log(result);
+    dispatch(
+        addTelegramUserToCasualChat(result.user_ids),
+    );
+}
+
+export async function receiveMessage() {
+    console.log('Receive Messages');
+    const result = await send({
+        '@type': 'updateNewMessage',
+    });
+    /* eslint-disable no-console */
+    console.log('result');
+    /* eslint-disable no-console */
+    console.log('sender:', result.message.sender.user_id);
+    console.log('message:', result.message.content.text.text);
+
+    // dispatch(
+    //     receiveMessageFromCasualChat(externalMessage,sender)
+    // );
+}
+
+export async function sendMessage() {
+    console.log('Send Messages');
+    const getResult = await send({
+        '@type': 'createPrivateChat',
+        user_id: 1359977993,
+    });
+
+    console.log('result');
+    console.log(getResult);
+
+    const result = await send({
+        '@type': 'sendMessage',
+        chat_id: 1359977993,
+        reply_to_message_id: 0,
+        disable_notifications: false,
+        from_background: false,
+        reply_markup: null,
+        input_message_content:
+        {
+            '@type': 'inputMessageText',
+            text: {
+                '@type': 'formattedText',
+                text: 'Test pjn',
+                entities: null,
+            },
+            disable_web_page_preview: false,
+            clear_draft: false,
+        },
+    });
+    /* eslint-disable no-console */
+    console.log('result');
+    console.log(result);
+    /* eslint-disable no-console */
 }
 
 const send = async (messageObject) => {
@@ -133,4 +199,16 @@ const checkAuthenticationCode = async (code) => {
     /* eslint-disable no-console */
     console.log(result);
 };
+
+// const getContacts = async () => {
+//     /* eslint-disable no-console */
+//     console.log('Pulling Contacts');
+//     const result = await send({
+//         '@type': 'getContacts',
+//     });
+//     /* eslint-disable no-console */
+//     console.log('result');
+//     /* eslint-disable no-console */
+//     console.log(result);
+// };
 

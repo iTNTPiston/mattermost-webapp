@@ -12,7 +12,9 @@ import {getBool} from 'mattermost-redux/selectors/entities/preferences';
 import {getPasswordConfig} from 'utils/utils.jsx';
 import {Preferences} from 'utils/constants';
 
-import {sendVerificationCode, startClient, logOut, start} from 'casualchat/extchat/telegram/TelegramWrapper';
+import {sendVerificationCode, startClient, logOut, start, pullContacts, receiveMessage, sendMessage} from 'casualchat/extchat/telegram/TelegramWrapper';
+
+import {getContactList} from 'casualchat/telegram_selector';
 
 import ExtChatTab from './user_settings_extchat.jsx';
 
@@ -31,6 +33,9 @@ function mapStateToProps(state, ownProps) {
     const enableSignUpWithOffice365 = config.EnableSignUpWithOffice365 === 'true';
     const experimentalEnableAuthenticationTransfer = config.ExperimentalEnableAuthenticationTransfer === 'true';
 
+    // const testSelector = test_selector(state);
+    const testContactList = getContactList(state);
+
     return {
         canUseAccessTokens: tokensEnabled && userHasTokenRole,
         enableOAuthServiceProvider,
@@ -43,6 +48,7 @@ function mapStateToProps(state, ownProps) {
         experimentalEnableAuthenticationTransfer,
         passwordConfig: getPasswordConfig(config),
         militaryTime: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false),
+        testContactList,
     };
 }
 
@@ -59,6 +65,9 @@ function mapDispatchToProps(dispatch) {
             startClient,
             logOut,
             start,
+            pullContacts: () => pullContacts(dispatch),
+            receiveMessage: () => receiveMessage(dispatch),
+            sendMessage,
         },
     };
 }

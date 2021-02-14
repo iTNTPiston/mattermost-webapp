@@ -3839,6 +3839,7 @@
   "user.settings.extchat.telegram.get_code": "Get Code",
   "user.settings.extchat.telegram.linked": "You have linked your Telegram account",
   "user.settings.extchat.telegram.phone_number": "Phone Number",
+  "user.settings.extchat.telegram.testButton": "Test Button",
   "user.settings.extchat.telegram.unlink": "Unlink Account",
   "user.settings.extchat.telegram.verify_code": "Verify Code",
   "user.settings.extchat.title": "External Chat Settings",
