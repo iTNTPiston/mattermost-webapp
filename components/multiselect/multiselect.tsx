@@ -48,6 +48,7 @@ export type Props<T extends Value> = {
     submitImmediatelyOn?: (value: T) => void;
     totalCount?: number;
     users?: unknown[];
+    externalUsers?: number[];
     valueRenderer: (props: {data: T}) => any;
     values: T[];
 }
@@ -241,7 +242,7 @@ export default class MultiSelect<T extends Value> extends React.PureComponent<Pr
 
     public render() {
         const options = Object.assign([...this.props.options]);
-        const {totalCount, users, values} = this.props;
+        const {totalCount, users, values,externalUsers} = this.props;
 
         let numRemainingText;
         if (this.props.numRemainingText) {

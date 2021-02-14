@@ -10,6 +10,13 @@ export function addTelegramUserToCasualChat(externalList) {
     };
 }
 
+export function setUserLinked(isLinked) {
+    return {
+        type: TelegramTypes.IS_LINKED_TO_TELEGRAM,
+        data: {isLinked},
+    };
+}
+
 export function receiveMessageFromCasualChat(externalMessage, sender) {
     return {
         type: TelegramTypes.RECEIVE_MESSAGE,
@@ -29,3 +36,5 @@ export function sendMessageToCasualChat(chatID, messageContent) {
         },
     };
 }
+
+

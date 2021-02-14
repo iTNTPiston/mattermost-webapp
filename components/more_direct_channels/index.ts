@@ -37,6 +37,9 @@ import {GlobalState} from 'types/store';
 
 import MoreDirectChannels from './more_direct_channels';
 
+import {isLinked,getContactList} from 'casualchat/telegram_selector';
+import {pullContacts} from 'casualchat/extchat/telegram/TelegramWrapper';
+
 type OwnProps = {
     isExistingChannel: boolean;
 }
@@ -54,6 +57,7 @@ function mapStateToProps(state: GlobalState, ownProps: OwnProps) {
     const searchTerm = state.views.search.modalSearch;
 
     let users;
+    let externalUsers = getContactList(state);
     if (searchTerm) {
         if (restrictDirectMessage === 'any') {
             users = searchProfilesSelector(state, searchTerm, false);
@@ -65,6 +69,8 @@ function mapStateToProps(state: GlobalState, ownProps: OwnProps) {
     } else {
         users = getProfilesInCurrentTeam(state);
     }
+
+    
 
     const filteredGroupChannels = filterGroupChannels(getChannelsWithUserProfiles(state), searchTerm);
     const myDirectChannels = filterDirectChannels(getAllChannels(state), currentUserId);
@@ -84,6 +90,8 @@ function mapStateToProps(state: GlobalState, ownProps: OwnProps) {
         currentUserId,
         restrictDirectMessage,
         totalCount: stats.total_users_count,
+        isLinked:isLinked(state),
+        externalUsers,
     };
 }
 
@@ -139,6 +147,9 @@ function mapDispatchToProps(dispatch: Dispatch) {
             searchGroupChannels,
             setModalSearchTerm,
         }, dispatch),
+        telegram: {
+            pullContacts: () => pullContacts(dispatch),
+        },
     };
 }
 

@@ -12,6 +12,11 @@ function telegram(state = {}, action) {
         nextState.externalList = action.data.externalList;
         return nextState;
     }
+    case TelegramTypes.IS_LINKED_TO_TELEGRAM: {
+        const nextState = {...state};
+        nextState.isLinked = action.data.isLinked;
+        return nextState;
+    }
 
     // case TelegramTypes.RECEIVE_MESSAGE: {
     //     const nextState = {...state};
