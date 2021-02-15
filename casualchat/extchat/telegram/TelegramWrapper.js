@@ -1,8 +1,9 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 import TdClient from 'tdweb';
-import {addTelegramUserToCasualChat} from 'casualchat/actions/telegram_action';
+import {addTelegramUserToCasualChat, setUserLinked} from 'casualchat/actions/telegram_action';
 import 'casualchat/include_prebuilt.js_tsignore';
+import store from 'stores/redux_store';
 
 //const TdClient = require("tdweb");
 let client;
@@ -135,6 +136,7 @@ const createUpdateFunction = (phoneNumber, whackyLinkCallback) => {
             } else if (updateObject.authorization_state['@type'] === 'authorizationStateReady') {
                 /* eslint-disable no-console */
                 console.log('Ready to go');
+                store.dispatch(setUserLinked(true));
                 whackyLinkCallback();
             }
         }

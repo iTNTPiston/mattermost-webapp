@@ -26,8 +26,9 @@ const MAX_SELECTABLE_VALUES = Constants.MAX_USERS_IN_GM - 1;
 
 type UserProfileValue = (UserProfile & Value);
 type GroupChannelValue = (Channel & Value & {profiles: UserProfile[]});
+type ExternalUserValue = Value & {externalId: number; delete_at: number};
 
-type OptionType = UserProfileValue | GroupChannelValue;
+type OptionType = UserProfileValue | GroupChannelValue | ExternalUserValue;
 
 type Props = {
     currentUserId: string;
@@ -39,6 +40,8 @@ type Props = {
     myDirectChannels: Channel[];
     statuses: RelationOneToOne<UserProfile, string>;
     totalCount?: number;
+    isLinked: boolean;
+    externalUsers: number[];
 
     /*
     * List of current channel members of existing channel
@@ -73,6 +76,9 @@ type Props = {
         setModalSearchTerm: (term: any) => Promise<{
             data: boolean;
         }>;
+    };
+    telegram: {
+        pullContacts: () => Promise<any>;
     };
 }
 
@@ -167,6 +173,12 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
         this.updateFromProps(prevProps);
     }
 
+    componentDidMount() {
+        if (this.props.isLinked) {
+            this.props.telegram.pullContacts();
+        }
+    }
+
     public loadProfilesMissingStatus = (users: UserProfile[] = [], statuses: RelationOneToOne<UserProfile, string> = {}) => {
         const missingStatusByIds = users.
             filter((user) => !statuses[user.id]).
@@ -239,7 +251,8 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
     addValue = (value: OptionType) => {
         if (Array.isArray(value)) {
             this.addUsers(value);
-        } else if ('profiles' in value) {
+            this.addExternalUsers(value);
+        } else if (typeof (value) != 'number' && 'profiles' in value) {
             this.addUsers(value.profiles);
         } else {
             const values = Object.assign([], this.state.values);
@@ -260,6 +273,27 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
                 continue;
             }
             values.push(user as OptionType);
+        }
+
+        this.setState({values});
+    };
+
+    addExternalUsers = (externalUsers: number[]) => {
+        const values: OptionType[] = Object.assign([], this.state.values);
+        const existingUserIds = values.filter((v) => 'externalId' in v).map((v) => (v as ExternalUserValue).externalId);
+        for (const user of externalUsers) {
+            if (existingUserIds.indexOf(user) !== -1) {
+                continue;
+            }
+            const extUser = {
+                externalId: user,
+                display_name: String(user),
+                id: String(user),
+                label: String(user),
+                value: String(user),
+                delete_at: -1,
+            };
+            values.push(extUser as OptionType);
         }
 
         this.setState({values});

@@ -9,9 +9,13 @@
 // };
 
 export const getContactList = (state) => {
-    return state.telegram;
+    return state.telegram.externalList;
 };
 
 export const getExternalMessage = (state) => {
     return state.telegram;
+};
+
+export const isLinked = (state) => {
+    return state.telegram.isLinked;
 };
