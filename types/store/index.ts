@@ -9,6 +9,8 @@ import {I18nState} from './i18n';
 import {RhsViewState} from './rhs';
 import {PluginsState} from './plugins';
 
+import {TelegramState} from "casualchat/extchat/telegram/telegram_reducer";
+
 export type DraggingState = {
     state?: string;
     type?: string;
@@ -17,6 +19,7 @@ export type DraggingState = {
 
 export type GlobalState = BaseGlobalState & {
     plugins: PluginsState;
+    telegram: TelegramState;
     storage: {
         storage: {[key: string]: any};
     };

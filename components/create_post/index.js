@@ -45,6 +45,8 @@ import {openModal} from 'actions/views/modals';
 import {Constants, Preferences, StoragePrefixes, TutorialSteps, UserStatuses} from 'utils/constants';
 import {canUploadFiles} from 'utils/file_utils';
 
+import extchat from 'casualchat/extchat/extchat_adapter';
+
 import CreatePost from './create_post.jsx';
 
 function makeMapStateToProps() {
@@ -127,6 +129,7 @@ function makeMapStateToProps() {
             useGroupMentions,
             channelMemberCountsByGroup,
             isLDAPEnabled,
+            extchat,
         };
     };
 }

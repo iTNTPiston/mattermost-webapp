@@ -5,6 +5,8 @@ import {Client4} from 'mattermost-redux/client';
 import FormData from 'form-data';
 import {buildQueryString} from 'mattermost-redux/utils/helpers';
 import {isCustomEmoji} from 'mattermost-redux/utils/emoji_utils';
+import { ExtRef } from './types';
+import * as Utils from 'utils/utils.jsx';
 
 function getPrivateEmojisRoute() {
     return `${Client4.getEmojisRoute()}/private`;
@@ -114,4 +116,71 @@ export async function linkAccount(externalPlatform: string, externalId: string):
     );
 }
 
-export default {createPrivateEmoji, getEmojiUrl, getPrivateEmojis, searchPrivateEmoji, checkEmojiAccess, savePrivateEmoji, deleteEmojiWithAccess, removeEmojiAccess};
+export async function getAliasId(externalPlatform: string, externalId: string, username: string): Promise<string> {
+    return Client4.doFetch<string>(
+        `${Client4.getBaseRoute()}/extchat/${externalPlatform}/aliasUserId${buildQueryString({externalId, username})}`,
+        {method: 'get'},
+    );
+}
+
+export async function getExtRefByChannel(channelId: string): Promise<ExtRef|null> {
+    const ref = await Client4.doFetch<ExtRef>(
+        `${Client4.getBaseRoute()}/extchat/any/refByChannel${buildQueryString({channelId})}`,
+        {method: 'get'},
+    );
+    if(!ref.external_platform){
+        return null;
+    }
+    return ref;
+}
+
+export async function postToExtChannel(channelId: string, userId: string, message: string): Promise<any> {
+    const time = Utils.getTimestamp();
+    const post = {
+        file_ids: [],
+        message: message,
+        user_id: userId,
+        channel_id: channelId,
+        pending_post_id: `${userId}:${time}`,
+        create_at: time,
+        parent_id: null,
+        metadata: {},
+        props: {
+            mentionHighlightDisabled: false,
+            disable_group_highlight: false,
+        },
+    };
+    return Client4.doFetch<any>(
+        `${Client4.getBaseRoute()}/extchat/any/post`,
+        {
+            method: 'post',
+            body: JSON.stringify(post),
+        },
+    );
+}
+
+export async function getExtChannelByExternalId(platform: string, externalId: string): Promise<string> {
+    const result = await Client4.doFetch<{channelId: string}>(
+        `${Client4.getBaseRoute()}/extchat/${platform}/channel${buildQueryString({externalId})}`,
+        {
+            method: 'get'
+        }
+    );
+    console.log(result);
+    return result.channelId;
+}
+
+export default {
+    createPrivateEmoji, 
+    getEmojiUrl, 
+    getPrivateEmojis, 
+    searchPrivateEmoji, 
+    checkEmojiAccess, 
+    savePrivateEmoji, 
+    deleteEmojiWithAccess, 
+    removeEmojiAccess,
+    getAliasId,
+    getExtRefByChannel,
+    postToExtChannel,
+    getExtChannelByExternalId,
+};
