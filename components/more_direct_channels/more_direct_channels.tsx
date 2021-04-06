@@ -21,14 +21,18 @@ import BotBadge from 'components/widgets/badges/bot_badge';
 
 import GroupMessageOption from './group_message_option';
 
+import CasualChatClient from 'casualchat/CasualChatClient';
+import {ExtChat} from 'casualchat/extchat/extchat_adapter';
+import {TelegramContact} from 'casualchat/extchat/telegram/telegram_reducer';
+
 const USERS_PER_PAGE = 50;
 const MAX_SELECTABLE_VALUES = Constants.MAX_USERS_IN_GM - 1;
 
 type UserProfileValue = (UserProfile & Value);
 type GroupChannelValue = (Channel & Value & {profiles: UserProfile[]});
-type ExternalUserValue = Value & {externalId: number; delete_at: number};
+type TelegramUserValue = Value & {telegramContact: TelegramContact; delete_at: number};
 
-type OptionType = UserProfileValue | GroupChannelValue | ExternalUserValue;
+type OptionType = UserProfileValue | GroupChannelValue | TelegramUserValue;
 
 type Props = {
     currentUserId: string;
@@ -41,7 +45,7 @@ type Props = {
     statuses: RelationOneToOne<UserProfile, string>;
     totalCount?: number;
     isLinked: boolean;
-    externalUsers: number[];
+    telegramContacts: TelegramContact[];
 
     /*
     * List of current channel members of existing channel
@@ -77,9 +81,7 @@ type Props = {
             data: boolean;
         }>;
     };
-    telegram: {
-        pullContacts: () => Promise<any>;
-    };
+    extchat: ExtChat;
 }
 
 type State = {
@@ -175,7 +177,7 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
 
     componentDidMount() {
         if (this.props.isLinked) {
-            this.props.telegram.pullContacts();
+            this.props.extchat.telegram.pullContacts();
         }
     }
 
@@ -233,6 +235,7 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
 
         const done = (result: any) => {
             const {data, error} = result;
+
             this.setState({saving: false});
 
             if (!error) {
@@ -242,7 +245,17 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
         };
 
         if (userIds.length === 1) {
-            actions.openDirectChannelToUserId(userIds[0]).then(done);
+            
+            if ("telegramContact" in values[0]){
+                const {id,name} = values[0].telegramContact;
+                const platform = "telegram";
+                CasualChatClient.getAliasId(platform, id, name).then(aliasId=>{
+                    console.log(aliasId);
+                    actions.openDirectChannelToUserId(aliasId).then(done);
+                });
+            }else{
+                actions.openDirectChannelToUserId(userIds[0]).then(done);
+            }
         } else {
             actions.openGroupChannelToUserIds(userIds).then(done);
         }
@@ -251,7 +264,6 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
     addValue = (value: OptionType) => {
         if (Array.isArray(value)) {
             this.addUsers(value);
-            this.addExternalUsers(value);
         } else if (typeof (value) != 'number' && 'profiles' in value) {
             this.addUsers(value.profiles);
         } else {
@@ -278,16 +290,16 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
         this.setState({values});
     };
 
-    addExternalUsers = (externalUsers: number[]) => {
+    addExternalUsers = (externalUsers: TelegramContact[]) => {
         const values: OptionType[] = Object.assign([], this.state.values);
-        const existingUserIds = values.filter((v) => 'externalId' in v).map((v) => (v as ExternalUserValue).externalId);
+        const existingUserIds = values.filter((v) => 'telegramContact' in v).map((v) => (v as TelegramUserValue).telegramContact.id);
         for (const user of externalUsers) {
-            if (existingUserIds.indexOf(user) !== -1) {
+            if (existingUserIds.indexOf(user.id) !== -1) {
                 continue;
             }
             const extUser = {
-                externalId: user,
-                display_name: String(user),
+                telegramContact: user,
+                display_name: user.name,
                 id: String(user),
                 label: String(user),
                 value: String(user),
@@ -352,8 +364,13 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
                 />
             );
         }
-
-        const displayName = displayEntireNameForUser(option);
+        let displayName;
+        
+        if("telegramContact" in option){
+            displayName = option.telegramContact.name;
+        }else{
+            displayName = displayEntireNameForUser(option);
+        }
 
         let modalName: string | React.ReactElement = displayName;
         if (option.id === this.props.currentUserId) {
@@ -427,11 +444,14 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
     }
 
     renderValue(props: {data: OptionType}) {
+        if("telegramContact" in props.data){
+            return props.data.telegramContact.name;
+        }
         return (props.data as UserProfileValue).username;
     }
 
     handleSubmitImmediatelyOn = (value: OptionType) => {
-        return value.id === this.props.currentUserId || Boolean(value.delete_at);
+        return value.id === this.props.currentUserId || Boolean(value.delete_at) || "telegramContact" in value;
     }
 
     render() {
@@ -501,7 +521,18 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
             return {label: group.display_name, value: group.id, ...group};
         });
 
-        const options: OptionType[] = [...usersValues, ...groupChannelsValues];
+        const telegramContactValues = ((this.props.telegramContacts) || []).map(contact=>{
+            return {
+                telegramContact: contact,
+                id: contact.id,
+                label: contact.name,
+                value: contact.name,
+                delete_at: 0,
+                display_name: contact.name,
+            } as TelegramUserValue
+        });
+
+        const options: OptionType[] = [...usersValues, ...groupChannelsValues, ...telegramContactValues];
         const body = (
             <MultiSelect<OptionType>
                 key='moreDirectChannelsList'
