@@ -193,6 +193,22 @@ export default class BackstageSidebar extends React.PureComponent {
         );
     }
 
+    renderFriendList() {
+        return (
+            <BackstageCategory
+                name='friend_list'
+                parentLink={'/' + this.props.team.name}
+                icon='fa-smile-o'
+                title={
+                    <FormattedMessage
+                        id='backstage_sidebar.friend-list'
+                        defaultMessage='My Friends List'
+                    />
+                }
+            />
+        );
+    }
+
     render() {
         return (
             <div className='backstage-sidebar'>
@@ -200,7 +216,9 @@ export default class BackstageSidebar extends React.PureComponent {
 
                     {this.renderCustomEmoji()}
                     {this.renderPrivateEmoji()}
+                    {this.renderFriendList()}
                     {this.renderIntegrations()}
+                    
 
                 </ul>
             </div>
