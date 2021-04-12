@@ -12,8 +12,8 @@ import WarningIcon from 'components/widgets/icons/fa_warning_icon';
 export default class DeleteFriend extends DeleteModalTrigger {
     static propTypes = {
         onDelete: PropTypes.func.isRequired,
-        isPrivate: PropTypes.bool.isRequired,
-        isOwner: PropTypes.bool,
+        // isPrivate: PropTypes.bool.isRequired,
+        // isOwner: PropTypes.bool,
     }
 
     get triggerTitle() {

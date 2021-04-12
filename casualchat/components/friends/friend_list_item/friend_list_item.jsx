@@ -7,26 +7,25 @@ import PropTypes from 'prop-types';
 import Permissions from 'mattermost-redux/constants/permissions';
 import {Client4} from 'mattermost-redux/client';
 
-import DeleteEmoji from 'casualchat/components/friends/delete_friend_modal.jsx';
-import AnyTeamPermissionGate from 'components/permissions_gates/any_team_permission_gate';
+// import DeleteEmoji from 'casualchat/components/friends/delete_friend_modal.jsx';
+// import AnyTeamPermissionGate from 'components/permissions_gates/any_team_permission_gate';
+import DeleteFriend from 'casualchat/components/friends/delete_friend_modal.jsx';
 
 export default class FriendListItem extends React.PureComponent {
     static propTypes = {
-        emoji: PropTypes.object.isRequired,
+        friend: PropTypes.object.isRequired,
         currentUserId: PropTypes.string.isRequired,
         creatorDisplayName: PropTypes.string.isRequired,
         creatorUsername: PropTypes.string,
         currentTeam: PropTypes.object,
         onDelete: PropTypes.func,
         actions: PropTypes.shape({
-            deleteEmojiWithAccess: PropTypes.func.isRequired,
-            removeEmojiAccess: PropTypes.func.isRequired,
+            deleteFriend: PropTypes.func.isRequired,
         }).isRequired,
-        isPrivate: PropTypes.bool.isRequired,
     }
 
     static defaultProps = {
-        emoji: {},
+        friend: {},
         currentUserId: '',
         currentTeam: {},
         creatorDisplayName: '',
@@ -34,72 +33,42 @@ export default class FriendListItem extends React.PureComponent {
 
     handleDelete = () => {
         if (this.props.onDelete) {
-            this.props.onDelete(this.props.emoji.id);
+            this.props.onDelete(this.props.friend.id);
         }
-        this.props.actions.deleteEmojiWithAccess(this.props.emoji.id);
-    }
-
-    handleRemoveAccessPrivate = () => {
-        if (this.props.onDelete) {
-            this.props.onDelete(this.props.emoji.id);
-        }
-        this.props.actions.removeEmojiAccess(this.props.emoji.id);
+        this.props.actions.deleteFriend(this.props.friend.id);
     }
 
     render() {
-        const emoji = this.props.emoji;
-        const creatorUsername = this.props.creatorUsername;
-        let creatorDisplayName = this.props.creatorDisplayName;
+        const friend = this.props.friend;
+        // const creatorUsername = this.props.creatorUsername;
+        // let creatorDisplayName = this.props.creatorDisplayName;
 
-        if (creatorUsername && creatorUsername !== creatorDisplayName) {
-            creatorDisplayName += ' (@' + creatorUsername + ')';
-        }
+        // if (creatorUsername && creatorUsername !== creatorDisplayName) {
+        //     creatorDisplayName += ' (@' + creatorUsername + ')';
+        // }
 
-        let deleteButton = null;
-        if (this.props.isPrivate) {
-            if (emoji.creator_id === this.props.currentUserId) {
-                deleteButton = (
-                    <DeleteEmoji
+        let deleteButton = (
+                    <DeleteFriend
                         onDelete={this.handleDelete}
                         isPrivate={this.props.isPrivate}
                         isOwner={true}
                     />);
-            } else {
-                deleteButton = (
-                    <DeleteEmoji
-                        onDelete={this.handleRemoveAccessPrivate}
-                        isPrivate={this.props.isPrivate}
-                        isOwner={false}
-                    />);
-            }
-        } else {
-            deleteButton = (
-                <AnyTeamPermissionGate permissions={[Permissions.DELETE_EMOJIS]}>
-                    <AnyTeamPermissionGate permissions={[Permissions.DELETE_OTHERS_EMOJIS]}>
-                        <DeleteEmoji
-                            onDelete={this.handleDelete}
-                            isPrivate={this.props.isPrivate}
-                        />
-                    </AnyTeamPermissionGate>
-                </AnyTeamPermissionGate>
-            );
-        }
 
         return (
             <tr className='backstage-list__item'>
-                <td className='emoji-list__name'>
-                    {':' + emoji.name + ':'}
+                <td className='friend-list__name'>
+                    {':' + friend.name + ':'}
                 </td>
-                <td className='emoji-list__image'>
-                    <span
+                <td className='friend-list__image'>
+                    {/* <span
                         className='emoticon'
                         style={{backgroundImage: 'url(' + Client4.getCustomEmojiImageUrl(emoji.id) + ')'}}
-                    />
+                    /> */}
                 </td>
-                <td className='emoji-list__creator'>
+                {/* <td className='emoji-list__creator'>
                     {creatorDisplayName}
-                </td>
-                <td className='emoji-list-item_actions'>
+                </td> */}
+                <td className='friend-list-item_actions'>
                     {deleteButton}
                 </td>
             </tr>

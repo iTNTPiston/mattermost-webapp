@@ -29,8 +29,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            deleteEmojiWithAccess,
-            removeEmojiAccess,
+            deleteFriend,
         }, dispatch),
     };
 }
