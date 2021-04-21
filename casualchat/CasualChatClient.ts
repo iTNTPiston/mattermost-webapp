@@ -5,8 +5,10 @@ import {Client4} from 'mattermost-redux/client';
 import FormData from 'form-data';
 import {buildQueryString} from 'mattermost-redux/utils/helpers';
 import {isCustomEmoji} from 'mattermost-redux/utils/emoji_utils';
-import { ExtRef } from './types';
+
 import * as Utils from 'utils/utils.jsx';
+
+import {ExtRef} from './types';
 
 function getPrivateEmojisRoute() {
     return `${Client4.getEmojisRoute()}/private`;
@@ -128,7 +130,7 @@ export async function getExtRefByChannel(channelId: string): Promise<ExtRef|null
         `${Client4.getBaseRoute()}/extchat/any/refByChannel${buildQueryString({channelId})}`,
         {method: 'get'},
     );
-    if(!ref.external_platform){
+    if (!ref.external_platform) {
         return null;
     }
     return ref;
@@ -138,7 +140,7 @@ export async function postToExtChannel(channelId: string, userId: string, messag
     const time = Utils.getTimestamp();
     const post = {
         file_ids: [],
-        message: message,
+        message,
         user_id: userId,
         channel_id: channelId,
         pending_post_id: `${userId}:${time}`,
@@ -166,18 +168,17 @@ export async function getExtChannelByExternalId(platform: string, externalId: st
             method: 'get'
         }
     );
-    console.log(result);
     return result.channelId;
 }
 
 export default {
-    createPrivateEmoji, 
-    getEmojiUrl, 
-    getPrivateEmojis, 
-    searchPrivateEmoji, 
-    checkEmojiAccess, 
-    savePrivateEmoji, 
-    deleteEmojiWithAccess, 
+    createPrivateEmoji,
+    getEmojiUrl,
+    getPrivateEmojis,
+    searchPrivateEmoji,
+    checkEmojiAccess,
+    savePrivateEmoji,
+    deleteEmojiWithAccess,
     removeEmojiAccess,
     getAliasId,
     getExtRefByChannel,

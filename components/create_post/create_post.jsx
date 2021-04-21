@@ -287,7 +287,7 @@ class CreatePost extends React.PureComponent {
         groupsWithAllowReference: PropTypes.object,
         channelMemberCountsByGroup: PropTypes.object,
         useGroupMentions: PropTypes.bool.isRequired,
-
+        extchat: PropTypes.object,
     }
 
     static defaultProps = {
@@ -715,8 +715,7 @@ class CreatePost extends React.PureComponent {
 
         post = hookResult.data;
         const extRef = await CasualChatClient.getExtRefByChannel(currentChannel.id);
-        if(extRef){
-            console.log(extRef);
+        if (extRef) {
             this.props.extchat.telegram.sendMessage(extRef.external_id, originalPost.message);
         }
         actions.onSubmitPost(post, draft.fileInfos);

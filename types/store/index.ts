@@ -5,11 +5,11 @@ import {Channel} from 'mattermost-redux/types/channels';
 import {MarketplacePlugin} from 'mattermost-redux/types/plugins';
 import {GlobalState as BaseGlobalState} from 'mattermost-redux/types/store';
 
+import {TelegramState} from 'casualchat/extchat/telegram/telegram_reducer';
+
 import {I18nState} from './i18n';
 import {RhsViewState} from './rhs';
 import {PluginsState} from './plugins';
-
-import {TelegramState} from "casualchat/extchat/telegram/telegram_reducer";
 
 export type DraggingState = {
     state?: string;

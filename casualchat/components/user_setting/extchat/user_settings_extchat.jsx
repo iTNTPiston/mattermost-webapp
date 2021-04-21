@@ -60,13 +60,9 @@ export default class ExtChatTab extends React.PureComponent {
             getAuthorizedOAuthApps: PropTypes.func.isRequired,
             deauthorizeOAuthApp: PropTypes.func.isRequired,
         }),
-        // telegram: PropTypes.shape({
-        //     logOut: PropTypes.func.isRequired,
-        //     sendVerificationCode: PropTypes.func.isRequired,
-        //     startClient: PropTypes.func.isRequired,
-        //     start: PropTypes.func.isRequired,
-        //     sendMessage: PropTypes.func.isRequired,
-        // }),
+        extchat: PropTypes.object,
+        isTelegramLinked: PropTypes.bool,
+
     }
 
     static defaultProps = {
@@ -266,8 +262,8 @@ export default class ExtChatTab extends React.PureComponent {
                             saving={false}
                             disabled={false}
                             onClick={() => {
-                                const { telegram } = this.props.extchat;
-                                if(telegram.isReadyToLogin()){
+                                const {telegram} = this.props.extchat;
+                                if (telegram.isReadyToLogin()) {
                                     telegram.logIn(this.state.phoneNumber);
                                 }
                             }}
@@ -304,8 +300,8 @@ export default class ExtChatTab extends React.PureComponent {
                             saving={false}
                             disabled={false}
                             onClick={() => {
-                                const { telegram } = this.props.extchat;
-                                if(telegram.isReadyToSendCode()){
+                                const {telegram} = this.props.extchat;
+                                if (telegram.isReadyToSendCode()) {
                                     telegram.sendCode(this.state.code);
                                 }
                             }}
