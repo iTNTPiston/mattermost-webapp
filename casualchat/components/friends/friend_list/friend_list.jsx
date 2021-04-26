@@ -64,20 +64,19 @@ export default class FriendList extends React.PureComponent {
     }
 
     componentDidMount() {
-
-        // Emoji.SORT_BY_NAME: 
+        // Emoji.SORT_BY_NAME:
         // export default {
         //     SORT_BY_NAME: 'name',
         // };
-            this.props.actions.getFriends(0, FRIEND_PER_PAGE + 1, Friend.SORT_BY_NAME, true).then(({data}) => {
-                this.setState({loading: false});
-                if (data && data.length < FRIEND_PER_PAGE) {
-                    this.setState({
-                        missingPages: false,
-                        friendIds: data.map(({id}) => id),
-                    });
-                }
-            });
+        // this.props.actions.getFriends(0, FRIEND_PER_PAGE + 1, Friend.SORT_BY_NAME, true).then(({data}) => {
+        //     this.setState({loading: false});
+        //     if (data && data.length < FRIEND_PER_PAGE) {
+        //         this.setState({
+        //             missingPages: false,
+        //             friendIds: data.map(({id}) => id),
+        //         });
+        //     }
+        // });
     }
 
     nextPage = (e) => {
@@ -85,20 +84,20 @@ export default class FriendList extends React.PureComponent {
             e.preventDefault();
         }
 
-        const next = this.state.page + 1;
+        // const next = this.state.page + 1;
         this.setState({nextLoading: true});
-            this.props.actions.getFriends(next, FRIEND_PER_PAGE, Friend.SORT_BY_NAME, true).then(({data}) => {
-                this.setState({page: next, nextLoading: false});
-                if (data && data.length < FRIEND_PER_PAGE) {
-                    this.setState({
-                        missingPages: false,
-                        friendIds: data.map(({id}) => id),
-                    });
-                }
 
-                this.props.scrollToTop();
-            });
+        // this.props.actions.getFriends(next, FRIEND_PER_PAGE, Friend.SORT_BY_NAME, true).then(({data}) => {
+        //     this.setState({page: next, nextLoading: false});
+        //     if (data && data.length < FRIEND_PER_PAGE) {
+        //         this.setState({
+        //             missingPages: false,
+        //             friendIds: data.map(({id}) => id),
+        //         });
+        //     }
 
+        //     this.props.scrollToTop();
+        // });
     }
 
     previousPage = (e) => {
@@ -127,7 +126,7 @@ export default class FriendList extends React.PureComponent {
 
             this.setState({loading: true});
 
-            let response = await this.props.actions.searchFriends(term, {}, true);
+            const response = await this.props.actions.searchFriends(term, {}, true);
 
             const {data} = response;
             if (data) {
@@ -177,19 +176,19 @@ export default class FriendList extends React.PureComponent {
                 </tr>,
             );
         } else if (this.state.friendIds.length === 0 || (searchFriends && searchFriends.length === 0)) {
-                friends.push(
-                    <tr
-                        key='empty'
-                        className='backstage-list__item backstage-list__empty'
-                    >
-                        <td colSpan='4'>
-                            <FormattedMessage
-                                id='friend_list.empty'
-                                defaultMessage='No friends found'
-                            />
-                        </td>
-                    </tr>,
-                );
+            friends.push(
+                <tr
+                    key='empty'
+                    className='backstage-list__item backstage-list__empty'
+                >
+                    <td colSpan='4'>
+                        <FormattedMessage
+                            id='friend_list.empty'
+                            defaultMessage='No friends found'
+                        />
+                    </td>
+                </tr>,
+            );
         } else if (searchFriends) {
             searchFriends.forEach((friendId) => {
                 friends.push(

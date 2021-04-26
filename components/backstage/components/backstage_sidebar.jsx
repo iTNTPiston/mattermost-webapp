@@ -218,7 +218,6 @@ export default class BackstageSidebar extends React.PureComponent {
                     {this.renderPrivateEmoji()}
                     {this.renderFriendList()}
                     {this.renderIntegrations()}
-                    
 
                 </ul>
             </div>

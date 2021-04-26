@@ -13,8 +13,8 @@ import {getPasswordConfig} from 'utils/utils.jsx';
 import {Preferences} from 'utils/constants';
 
 //import {sendVerificationCode, startClient, logOut, start, pullContacts, receiveMessage, sendMessage} from 'casualchat/extchat/telegram/telegram_adapter';
-import extchat from "casualchat/extchat/extchat_adapter";
-import {isLinked} from "casualchat/extchat/telegram/telegram_selector";
+import extchat from 'casualchat/extchat/extchat_adapter';
+import {isLinked} from 'casualchat/extchat/telegram/telegram_selector';
 
 import ExtChatTab from './user_settings_extchat.jsx';
 

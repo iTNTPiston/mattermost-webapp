@@ -4,8 +4,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Permissions from 'mattermost-redux/constants/permissions';
-import {Client4} from 'mattermost-redux/client';
+// import Permissions from 'mattermost-redux/constants/permissions';
+// import {Client4} from 'mattermost-redux/client';
 
 // import DeleteEmoji from 'casualchat/components/friends/delete_friend_modal.jsx';
 // import AnyTeamPermissionGate from 'components/permissions_gates/any_team_permission_gate';
@@ -40,6 +40,7 @@ export default class FriendListItem extends React.PureComponent {
 
     render() {
         const friend = this.props.friend;
+
         // const creatorUsername = this.props.creatorUsername;
         // let creatorDisplayName = this.props.creatorDisplayName;
 
@@ -47,12 +48,13 @@ export default class FriendListItem extends React.PureComponent {
         //     creatorDisplayName += ' (@' + creatorUsername + ')';
         // }
 
-        let deleteButton = (
-                    <DeleteFriend
-                        onDelete={this.handleDelete}
-                        isPrivate={this.props.isPrivate}
-                        isOwner={true}
-                    />);
+        const deleteButton = (
+            <DeleteFriend
+                onDelete={this.handleDelete}
+
+                // isPrivate={this.props.isPrivate}
+                // isOwner={true}
+            />);
 
         return (
             <tr className='backstage-list__item'>

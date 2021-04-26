@@ -19,11 +19,11 @@ import AddIcon from 'components/widgets/icons/fa_add_icon';
 import GuestBadge from 'components/widgets/badges/guest_badge';
 import BotBadge from 'components/widgets/badges/bot_badge';
 
-import GroupMessageOption from './group_message_option';
-
 import CasualChatClient from 'casualchat/CasualChatClient';
 import {ExtChat} from 'casualchat/extchat/extchat_adapter';
 import {TelegramContact} from 'casualchat/extchat/telegram/telegram_reducer';
+
+import GroupMessageOption from './group_message_option';
 
 const USERS_PER_PAGE = 50;
 const MAX_SELECTABLE_VALUES = Constants.MAX_USERS_IN_GM - 1;
@@ -245,15 +245,14 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
         };
 
         if (userIds.length === 1) {
-            
-            if ("telegramContact" in values[0]){
-                const {id,name} = values[0].telegramContact;
-                const platform = "telegram";
-                CasualChatClient.getAliasId(platform, id, name).then(aliasId=>{
-                    console.log(aliasId);
+            if ('telegramContact' in values[0]) {
+                const {id, name} = values[0].telegramContact;
+                const platform = 'telegram';
+                CasualChatClient.getAliasId(platform, id, name).then((aliasId) => {
+                    // console.log(aliasId);
                     actions.openDirectChannelToUserId(aliasId).then(done);
                 });
-            }else{
+            } else {
                 actions.openDirectChannelToUserId(userIds[0]).then(done);
             }
         } else {
@@ -365,10 +364,10 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
             );
         }
         let displayName;
-        
-        if("telegramContact" in option){
+
+        if ('telegramContact' in option) {
             displayName = option.telegramContact.name;
-        }else{
+        } else {
             displayName = displayEntireNameForUser(option);
         }
 
@@ -444,14 +443,14 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
     }
 
     renderValue(props: {data: OptionType}) {
-        if("telegramContact" in props.data){
+        if ('telegramContact' in props.data) {
             return props.data.telegramContact.name;
         }
         return (props.data as UserProfileValue).username;
     }
 
     handleSubmitImmediatelyOn = (value: OptionType) => {
-        return value.id === this.props.currentUserId || Boolean(value.delete_at) || "telegramContact" in value;
+        return value.id === this.props.currentUserId || Boolean(value.delete_at) || 'telegramContact' in value;
     }
 
     render() {
@@ -521,7 +520,7 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
             return {label: group.display_name, value: group.id, ...group};
         });
 
-        const telegramContactValues = ((this.props.telegramContacts) || []).map(contact=>{
+        const telegramContactValues = ((this.props.telegramContacts) || []).map((contact) => {
             return {
                 telegramContact: contact,
                 id: contact.id,
@@ -529,7 +528,7 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
                 value: contact.name,
                 delete_at: 0,
                 display_name: contact.name,
-            } as TelegramUserValue
+            } as TelegramUserValue;
         });
 
         const options: OptionType[] = [...usersValues, ...groupChannelsValues, ...telegramContactValues];

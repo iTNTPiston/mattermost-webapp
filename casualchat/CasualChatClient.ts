@@ -1,13 +1,15 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 import {Emoji, CustomEmoji} from 'mattermost-redux/types/emojis';
-import {UserProfile} from 'mattermost-redux/types/users'
+import {UserProfile} from 'mattermost-redux/types/users';
 import {Client4} from 'mattermost-redux/client';
 import FormData from 'form-data';
 import {buildQueryString} from 'mattermost-redux/utils/helpers';
 import {isCustomEmoji} from 'mattermost-redux/utils/emoji_utils';
-import { ExtRef } from './types';
+
 import * as Utils from 'utils/utils.jsx';
+
+import {ExtRef} from './types';
 
 function getPrivateEmojisRoute() {
     return `${Client4.getEmojisRoute()}/private`;
@@ -129,7 +131,7 @@ export async function getExtRefByChannel(channelId: string): Promise<ExtRef|null
         `${Client4.getBaseRoute()}/extchat/any/refByChannel${buildQueryString({channelId})}`,
         {method: 'get'},
     );
-    if(!ref.external_platform){
+    if (!ref.external_platform) {
         return null;
     }
     return ref;
@@ -139,7 +141,7 @@ export async function postToExtChannel(channelId: string, userId: string, messag
     const time = Utils.getTimestamp();
     const post = {
         file_ids: [],
-        message: message,
+        message,
         user_id: userId,
         channel_id: channelId,
         pending_post_id: `${userId}:${time}`,
@@ -167,21 +169,22 @@ export async function getExtChannelByExternalId(platform: string, externalId: st
             method: 'get'
         }
     );
-    console.log(result);
+
+    // console.log(result);
     return result.channelId;
 }
 
-export async function getFriends(userID: string, page: number, perPage: number, sort: string): Promise<UserProfile[]> {
-    // const result = await Client4.doFetch<Emoji[]>(
-    //     `${getFriendsRoute()}${buildQueryString({page, per_page: perPage, sort})}`,
-    //     {method: 'get'},
-    // );
-    // if (result == null) {
-    //     return Promise.resolve([]);
-    // }
-    // return Promise.resolve(result);
-    return Promise.resolve([]);
-}
+// export async function getFriends(userID: string, page: number, perPage: number, sort: string): Promise<UserProfile[]> {
+// const result = await Client4.doFetch<Emoji[]>(
+//     `${getFriendsRoute()}${buildQueryString({page, per_page: perPage, sort})}`,
+//     {method: 'get'},
+// );
+// if (result == null) {
+//     return Promise.resolve([]);
+// }
+// return Promise.resolve(result);
+// return Promise.resolve([]);
+// }
 
 export async function searchFriend(userID: string, term: string, options = {}): Promise<UserProfile[]> {
     //TODO: After backend is finished
@@ -206,19 +209,20 @@ export async function deleteFriend(friendId: string): Promise<any> {
 }
 
 export default {
-    createPrivateEmoji, 
-    getEmojiUrl, 
-    getPrivateEmojis, 
-    searchPrivateEmoji, 
-    checkEmojiAccess, 
-    savePrivateEmoji, 
-    deleteEmojiWithAccess, 
+    createPrivateEmoji,
+    getEmojiUrl,
+    getPrivateEmojis,
+    searchPrivateEmoji,
+    checkEmojiAccess,
+    savePrivateEmoji,
+    deleteEmojiWithAccess,
     removeEmojiAccess,
     getAliasId,
     getExtRefByChannel,
     postToExtChannel,
     getExtChannelByExternalId,
-    getFriends,
+
+    // getFriends,
     searchFriend,
     deleteFriend,
 };
