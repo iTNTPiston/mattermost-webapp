@@ -9,8 +9,7 @@ import 'casualchat/include_prebuilt.js_tsignore';
 import store from 'stores/redux_store';
 import {ExtChatAdapter} from 'casualchat/extchat/extchat_adapter';
 
-// import {getExtRefByChannel, postToExtChannel, getExtChannelByExternalId} from 'casualchat/CasualChatClient';
-// import {getExtChannelByExternalId} from 'casualchat/CasualChatClient';
+import {getExtRefByChannel, postToExtChannel, getExtChannelByExternalId} from 'casualchat/CasualChatClient';
 
 import {TelegramContact} from './telegram_reducer';
 type TdObject = {'@type': string} & Record<string, any>;
