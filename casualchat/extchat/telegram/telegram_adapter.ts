@@ -1,5 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
+
+// @ts-ignore
 import TdClient from 'tdweb';
 import {setIsLinked, setContacts} from 'casualchat/actions/telegram_action';
 import 'casualchat/include_prebuilt.js_tsignore';
@@ -10,7 +12,6 @@ import {ExtChatAdapter} from 'casualchat/extchat/extchat_adapter';
 // import {getExtChannelByExternalId} from 'casualchat/CasualChatClient';
 
 import {TelegramContact} from './telegram_reducer';
-
 type TdObject = {'@type': string} & Record<string, any>;
 
 class TelegramAdapter implements ExtChatAdapter {
@@ -39,10 +40,9 @@ class TelegramAdapter implements ExtChatAdapter {
         case 'updateAuthorizationState':
             this.updateAuthorizationState(updateObject.authorization_state['@type']);
             break;
-
-        // case 'updateNewMessage':
-        //     this.updateNewMessage(updateObject);
-        //     break;
+        case 'updateNewMessage':
+            this.updateNewMessage(updateObject);
+            break;
         default:
 
                 //console.log(updateObject);
@@ -64,7 +64,6 @@ class TelegramAdapter implements ExtChatAdapter {
             this.readyToSendCode = true;
             break;
         case 'authorizationStateReady':
-            // console.log('Ready to go');
             store.dispatch(setIsLinked(true));
 
                 //whackyLinkCallback();
@@ -92,36 +91,34 @@ class TelegramAdapter implements ExtChatAdapter {
         });
     };
 
-    // private updateNewMessage = async (updateObject: TdObject): Promise<any> => {
-    // const senderExternalId: number = updateObject.message.sender.user_id;
+    private updateNewMessage = async (updateObject: TdObject): Promise<any> => {
+        const senderExternalId: number = updateObject.message.sender.user_id;
+        const messageObject = updateObject.message.content;
+        let message: string;
+        if ('text' in messageObject && 'text' in messageObject.text) {
+            message = messageObject.text.text;
+        } else {
+            message = '[Unsupported Message]';
+        }
 
-    // const messageObject = updateObject.message.content;
-    // let message: string;
-    // if ('text' in messageObject && 'text' in messageObject.text) {
-    //     message = messageObject.text.text;
-    // } else {
-    //     message = '[Unsupported Message]';
-    // }
+        //console.log(`${senderExternalId}: ${message}`);
+        let channelId: string;
+        try {
+            channelId = await getExtChannelByExternalId('telegram', String(senderExternalId));
+        } catch (e) {
+            //console.error(e);
+            return;
+        }
 
-    // console.log(`${senderExternalId}: ${message}`);
-    // let channelId: string;
-    // try {
-    //     channelId = await getExtChannelByExternalId('telegram', String(senderExternalId));
-    // } catch (e) {
-    //     // console.error(e);
+        //console.log(channelId);
+        const extRef = await getExtRefByChannel(channelId);
+        if (!extRef || !extRef.alias_user_id) {
+            return;
+        }
 
-    // }
-
-    // console.log(channelId);
-    // const extRef = await getExtRefByChannel(channelId);
-
-    // if (!extRef || !extRef.alias_user_id) {
-
-    // }
-
-    // console.log(extRef);
-    // return postToExtChannel(channelId, extRef.alias_user_id, message);
-    // }
+        //console.log(extRef);
+        postToExtChannel(channelId, extRef.alias_user_id, message);
+    }
 
     logOut = async (): Promise<any> => {
         await this.send({'@type': 'logout'});
@@ -138,30 +135,33 @@ class TelegramAdapter implements ExtChatAdapter {
     };
 
     pullContacts = async (): Promise<any> => {
-        // console.log('Pulling Contacts');
         const result = await this.send({
             '@type': 'getContacts',
         });
 
-        // console.log(result);
+        //console.log(result);
         const ids: number[] = result.user_ids;
         const contacts: Record<string, TelegramContact> = {};
-        for (let i = 0; i < ids.length; i++) {
-            // const userResult = await this.send({
-            //     '@type': 'getUser',
-            //     user_id: ids[i],
-            // });
-            // const name = `${userResult.first_name} ${userResult.last_name}`;
-            // const contact: TelegramContact = {
-            //     id: String(ids[i]),
-            //     name,
-            //     messages: [],
-            // };
-            // contacts[String(ids[i])] = contact;
-        }
-
-        // console.log('Done pulling contacts');
-        store.dispatch(setContacts(contacts));
+        const processFunction = async (i: number) => {
+            if (i >= ids.length) {
+                //console.log('Done pulling contacts');
+                store.dispatch(setContacts(contacts));
+            } else {
+                const userResult = await this.send({
+                    '@type': 'getUser',
+                    user_id: ids[i],
+                });
+                const name = `${userResult.first_name} ${userResult.last_name}`;
+                const contact: TelegramContact = {
+                    id: String(ids[i]),
+                    name,
+                    messages: [],
+                };
+                contacts[String(ids[i])] = contact;
+                await processFunction(i + 1);
+            }
+        };
+        await processFunction(0);
     }
 
     sendMessage = async (externalId: string, message: string): Promise<any> => {

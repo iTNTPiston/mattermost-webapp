@@ -169,8 +169,6 @@ export async function getExtChannelByExternalId(platform: string, externalId: st
             method: 'get'
         }
     );
-
-    // console.log(result);
     return result.channelId;
 }
 

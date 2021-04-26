@@ -3,7 +3,6 @@
 
 import {GlobalState} from 'types/store';
 
-// import {TelegramState, TelegramContact, TelegramMessage} from './telegram_reducer';
 import {TelegramState, TelegramContact} from './telegram_reducer';
 
 const getTelegramState = (state: GlobalState): TelegramState => {

@@ -29,5 +29,5 @@
     "e2e",
     "!node_modules/@types",
     "non_npm_dependencies"
-  ]
+  ],
 }

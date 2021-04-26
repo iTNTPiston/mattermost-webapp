@@ -249,7 +249,6 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
                 const {id, name} = values[0].telegramContact;
                 const platform = 'telegram';
                 CasualChatClient.getAliasId(platform, id, name).then((aliasId) => {
-                    // console.log(aliasId);
                     actions.openDirectChannelToUserId(aliasId).then(done);
                 });
             } else {
