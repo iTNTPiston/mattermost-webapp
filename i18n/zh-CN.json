@@ -1812,7 +1812,7 @@
   "friend_list.empty": "好友列表为空",
   "friend_list.image": "图片",
   "friend_list.name": "名称",
-  "friend_list.search": "",
+  "friend_list.search": "搜索",
   "general_tab.allowedDomains": "允许指定邮箱域名的用户加入此团队",
   "general_tab.allowedDomainsEdit": "点击 '编辑' 添加电子邮件域名白名单。",
   "general_tab.AllowedDomainsInfo": "团队和用户帐户只能从一个特定的域创建(例如: \"mattermost.org\")或逗号分隔域列表(例如: \"corp.mattermost.com, mattermost.org\")。",
