@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import {If, Then, Else} from 'react-if';
+// import {If, Then, Else} from 'react-if';
 
 import DeleteModalTrigger from 'components/delete_modal_trigger';
 import WarningIcon from 'components/widgets/icons/fa_warning_icon';
@@ -12,12 +12,14 @@ import WarningIcon from 'components/widgets/icons/fa_warning_icon';
 export default class DeleteFriend extends DeleteModalTrigger {
     static propTypes = {
         onDelete: PropTypes.func.isRequired,
+
         // isPrivate: PropTypes.bool.isRequired,
         // isOwner: PropTypes.bool,
     }
 
     get triggerTitle() {
         return (
+
             // <If condition={this.props.isPrivate && !this.props.isOwner}>
             //     <Then>
             //         <FormattedMessage
@@ -26,18 +28,20 @@ export default class DeleteFriend extends DeleteModalTrigger {
             //         />
             //     </Then>
             //     <Else>
-                    <FormattedMessage
-                        id='friend_list.delete'
-                        defaultMessage='Delete Friend'
-                    />
-            //     </Else>
-            // </If>
+            <FormattedMessage
+                id='friend_list.delete'
+                defaultMessage='Delete Friend'
+            />
+
+        //     </Else>
+        // </If>
 
         );
     }
 
     get modalTitle() {
         return (
+
             // <If condition={this.props.isPrivate && !this.props.isOwner}>
             //     <Then>
             //         <FormattedMessage
@@ -46,12 +50,13 @@ export default class DeleteFriend extends DeleteModalTrigger {
             //         />
             //     </Then>
             //     <Else>
-                    <FormattedMessage
-                        id='friend_list.delete.confirm.title'
-                        defaultMessage='Delete Friend'
-                    />
-            //     </Else>
-            // </If>
+            <FormattedMessage
+                id='friend_list.delete.confirm.title'
+                defaultMessage='Delete Friend'
+            />
+
+        //     </Else>
+        // </If>
         );
     }
 
@@ -67,11 +72,11 @@ export default class DeleteFriend extends DeleteModalTrigger {
                         />
                     </Then>
                     <Else> */}
-                        <FormattedMessage
-                            id='friend_list.delete.confirm.msg'
-                            defaultMessage='This action permanently removes this friend of yours. Are you sure you want to delete them?'
-                        />
-                    {/* </Else>
+                <FormattedMessage
+                    id='friend_list.delete.confirm.msg'
+                    defaultMessage='This action permanently removes this friend of yours. Are you sure you want to delete them?'
+                />
+                {/* </Else>
                 </If> */}
             </div>
         );
@@ -79,6 +84,7 @@ export default class DeleteFriend extends DeleteModalTrigger {
 
     get modalConfirmButton() {
         return (
+
             // <If condition={this.props.isPrivate && !this.props.isOwner}>
             //     <Then>
             //         <FormattedMessage
@@ -87,12 +93,13 @@ export default class DeleteFriend extends DeleteModalTrigger {
             //         />
             //     </Then>
             //     <Else>
-                    <FormattedMessage
-                        id='friend_list.delete.confirm.button'
-                        defaultMessage='Delete'
-                    />
-            //     </Else>
-            // </If>
+            <FormattedMessage
+                id='friend_list.delete.confirm.button'
+                defaultMessage='Delete'
+            />
+
+        //     </Else>
+        // </If>
 
         );
     }

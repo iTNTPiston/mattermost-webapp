@@ -6,11 +6,11 @@ import {bindActionCreators} from 'redux';
 
 //import {getCustomEmojiIdsSortedByName} from 'mattermost-redux/selectors/entities/emojis';
 
-import {getCustomEmojis, searchCustomEmojis} from 'mattermost-redux/actions/emojis';
+// import {getCustomEmojis, searchCustomEmojis} from 'mattermost-redux/actions/emojis';
 
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
-import {getPrivateEmojis, searchPrivateEmojis} from 'casualchat/actions/emojis';
+// import {getPrivateEmojis, searchPrivateEmojis} from 'casualchat/actions/emojis';
 
 import FriendList from 'casualchat/components/friends/friend_list/friend_list.jsx';
 
@@ -25,8 +25,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            getFriends,
-            searchFriends,
+
+            // getFriends,
+            // searchFriends,
         }, dispatch),
     };
 }

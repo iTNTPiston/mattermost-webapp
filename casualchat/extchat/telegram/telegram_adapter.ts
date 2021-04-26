@@ -8,10 +8,10 @@ import 'casualchat/include_prebuilt.js_tsignore';
 import store from 'stores/redux_store';
 import {ExtChatAdapter} from 'casualchat/extchat/extchat_adapter';
 
-import {getExtRefByChannel, postToExtChannel, getExtChannelByExternalId} from 'casualchat/CasualChatClient';
+// import {getExtRefByChannel, postToExtChannel, getExtChannelByExternalId} from 'casualchat/CasualChatClient';
+// import {getExtChannelByExternalId} from 'casualchat/CasualChatClient';
 
 import {TelegramContact} from './telegram_reducer';
-
 type TdObject = {'@type': string} & Record<string, any>;
 
 class TelegramAdapter implements ExtChatAdapter {
@@ -64,7 +64,6 @@ class TelegramAdapter implements ExtChatAdapter {
             this.readyToSendCode = true;
             break;
         case 'authorizationStateReady':
-            //console.log('Ready to go');
             store.dispatch(setIsLinked(true));
 
                 //whackyLinkCallback();
@@ -136,7 +135,6 @@ class TelegramAdapter implements ExtChatAdapter {
     };
 
     pullContacts = async (): Promise<any> => {
-        //console.log('Pulling Contacts');
         const result = await this.send({
             '@type': 'getContacts',
         });

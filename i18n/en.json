@@ -3842,7 +3842,6 @@
   "user.settings.display.theme.title": "Theme",
   "user.settings.display.timezone": "Timezone",
   "user.settings.display.title": "Display Settings",
-  "user.settings.extchat.close": "Close",
   "user.settings.extchat.icon": "External Chat Settings Icon",
   "user.settings.extchat.telegram": "Telegram",
   "user.settings.extchat.telegram_describe": "Link your Mattermost account to your Telegram",

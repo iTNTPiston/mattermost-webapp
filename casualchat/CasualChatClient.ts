@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 import {Emoji, CustomEmoji} from 'mattermost-redux/types/emojis';
-import {UserProfile} from 'mattermost-redux/types/users'
+import {UserProfile} from 'mattermost-redux/types/users';
 import {Client4} from 'mattermost-redux/client';
 import FormData from 'form-data';
 import {buildQueryString} from 'mattermost-redux/utils/helpers';
@@ -172,17 +172,17 @@ export async function getExtChannelByExternalId(platform: string, externalId: st
     return result.channelId;
 }
 
-export async function getFriends(userID: string, page: number, perPage: number, sort: string): Promise<UserProfile[]> {
-    // const result = await Client4.doFetch<Emoji[]>(
-    //     `${getFriendsRoute()}${buildQueryString({page, per_page: perPage, sort})}`,
-    //     {method: 'get'},
-    // );
-    // if (result == null) {
-    //     return Promise.resolve([]);
-    // }
-    // return Promise.resolve(result);
-    return Promise.resolve([]);
-}
+// export async function getFriends(userID: string, page: number, perPage: number, sort: string): Promise<UserProfile[]> {
+// const result = await Client4.doFetch<Emoji[]>(
+//     `${getFriendsRoute()}${buildQueryString({page, per_page: perPage, sort})}`,
+//     {method: 'get'},
+// );
+// if (result == null) {
+//     return Promise.resolve([]);
+// }
+// return Promise.resolve(result);
+// return Promise.resolve([]);
+// }
 
 export async function searchFriend(userID: string, term: string, options = {}): Promise<UserProfile[]> {
     //TODO: After backend is finished
@@ -219,7 +219,8 @@ export default {
     getExtRefByChannel,
     postToExtChannel,
     getExtChannelByExternalId,
-    getFriends,
+
+    // getFriends,
     searchFriend,
     deleteFriend,
 };
