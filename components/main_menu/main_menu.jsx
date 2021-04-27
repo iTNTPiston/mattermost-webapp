@@ -353,6 +353,12 @@ class MainMenu extends React.PureComponent {
                         to={'/' + this.props.teamName + '/emoji_private'}
                         text={formatMessage({id: 'navbar_dropdown.emoji-private', defaultMessage: 'Private Emoji'})}
                     />
+                    <Menu.ItemLink
+                        id='friendList'
+                        show={!this.props.mobile}
+                        to={'/' + this.props.teamName + '/friend_list'}
+                        text={formatMessage({id: 'navbar_dropdown.friend-list', defaultMessage: 'My Friends List'})}
+                    />
                 </Menu.Group>
                 <Menu.Group>
                     <SystemPermissionGate permissions={Permissions.SYSCONSOLE_READ_PERMISSIONS}>

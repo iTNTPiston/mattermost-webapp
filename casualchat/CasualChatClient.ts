@@ -1,10 +1,15 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 import {Emoji, CustomEmoji} from 'mattermost-redux/types/emojis';
+import {UserProfile} from 'mattermost-redux/types/users';
 import {Client4} from 'mattermost-redux/client';
 import FormData from 'form-data';
 import {buildQueryString} from 'mattermost-redux/utils/helpers';
 import {isCustomEmoji} from 'mattermost-redux/utils/emoji_utils';
+
+import * as Utils from 'utils/utils.jsx';
+
+import {ExtRef} from './types';
 
 function getPrivateEmojisRoute() {
     return `${Client4.getEmojisRoute()}/private`;
@@ -114,4 +119,108 @@ export async function linkAccount(externalPlatform: string, externalId: string):
     );
 }
 
-export default {createPrivateEmoji, getEmojiUrl, getPrivateEmojis, searchPrivateEmoji, checkEmojiAccess, savePrivateEmoji, deleteEmojiWithAccess, removeEmojiAccess};
+export async function getAliasId(externalPlatform: string, externalId: string, username: string): Promise<string> {
+    return Client4.doFetch<string>(
+        `${Client4.getBaseRoute()}/extchat/${externalPlatform}/aliasUserId${buildQueryString({externalId, username})}`,
+        {method: 'get'},
+    );
+}
+
+export async function getExtRefByChannel(channelId: string): Promise<ExtRef|null> {
+    const ref = await Client4.doFetch<ExtRef>(
+        `${Client4.getBaseRoute()}/extchat/any/refByChannel${buildQueryString({channelId})}`,
+        {method: 'get'},
+    );
+    if (!ref.external_platform) {
+        return null;
+    }
+    return ref;
+}
+
+export async function postToExtChannel(channelId: string, userId: string, message: string): Promise<any> {
+    const time = Utils.getTimestamp();
+    const post = {
+        file_ids: [],
+        message,
+        user_id: userId,
+        channel_id: channelId,
+        pending_post_id: `${userId}:${time}`,
+        create_at: time,
+        parent_id: null,
+        metadata: {},
+        props: {
+            mentionHighlightDisabled: false,
+            disable_group_highlight: false,
+        },
+    };
+    return Client4.doFetch<any>(
+        `${Client4.getBaseRoute()}/extchat/any/post`,
+        {
+            method: 'post',
+            body: JSON.stringify(post),
+        },
+    );
+}
+
+export async function getExtChannelByExternalId(platform: string, externalId: string): Promise<string> {
+    const result = await Client4.doFetch<{channelId: string}>(
+        `${Client4.getBaseRoute()}/extchat/${platform}/channel${buildQueryString({externalId})}`,
+        {
+            method: 'get'
+        }
+    );
+    return result.channelId;
+}
+
+// export async function getFriends(userID: string, page: number, perPage: number, sort: string): Promise<UserProfile[]> {
+// const result = await Client4.doFetch<Emoji[]>(
+//     `${getFriendsRoute()}${buildQueryString({page, per_page: perPage, sort})}`,
+//     {method: 'get'},
+// );
+// if (result == null) {
+//     return Promise.resolve([]);
+// }
+// return Promise.resolve(result);
+// return Promise.resolve([]);
+// }
+
+export async function searchFriend(userID: string, term: string, options = {}): Promise<UserProfile[]> {
+    //TODO: After backend is finished
+    // return Client4.doFetch<CustomEmoji[]>(
+    //     `${Client4.getEmojisRoute()}/search`,
+    //     {method: 'post', body: JSON.stringify({term, ...options})},
+    // );
+    //console.log('userId =', userID);
+    //console.log('term =', term);
+    //console.log('options =', options);
+    if (userID && term && options) {
+        //pass linter
+    }
+    return Promise.resolve([]);
+}
+
+export async function deleteFriend(friendId: string): Promise<any> {
+    return Client4.doFetch<any>(
+        `${Client4.getEmojiRoute(friendId)}`,
+        {method: 'delete'},
+    );
+}
+
+export default {
+    createPrivateEmoji,
+    getEmojiUrl,
+    getPrivateEmojis,
+    searchPrivateEmoji,
+    checkEmojiAccess,
+    savePrivateEmoji,
+    deleteEmojiWithAccess,
+    removeEmojiAccess,
+    getAliasId,
+    getExtRefByChannel,
+    postToExtChannel,
+    getExtChannelByExternalId,
+
+    // getFriends,
+    searchFriend,
+    deleteFriend,
+};

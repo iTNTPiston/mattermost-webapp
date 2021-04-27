@@ -44,6 +44,8 @@ import TutorialTip from 'components/tutorial/tutorial_tip';
 import FormattedMarkdownMessage from 'components/formatted_markdown_message.jsx';
 import MessageSubmitError from 'components/message_submit_error';
 
+import CasualChatClient from 'casualchat/CasualChatClient';
+
 const KeyCodes = Constants.KeyCodes;
 
 // Temporary fix for IE-11, see MM-13423
@@ -285,6 +287,7 @@ class CreatePost extends React.PureComponent {
         groupsWithAllowReference: PropTypes.object,
         channelMemberCountsByGroup: PropTypes.object,
         useGroupMentions: PropTypes.bool.isRequired,
+        extchat: PropTypes.object,
     }
 
     static defaultProps = {
@@ -711,7 +714,10 @@ class CreatePost extends React.PureComponent {
         }
 
         post = hookResult.data;
-
+        const extRef = await CasualChatClient.getExtRefByChannel(currentChannel.id);
+        if (extRef) {
+            this.props.extchat.telegram.sendMessage(extRef.external_id, originalPost.message);
+        }
         actions.onSubmitPost(post, draft.fileInfos);
         actions.scrollPostListToBottom();
 
