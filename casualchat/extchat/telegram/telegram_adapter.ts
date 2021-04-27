@@ -5,7 +5,15 @@
 // @ts-ignore
 import TdClient from 'tdweb';
 import {setIsLinked, setContacts} from 'casualchat/actions/telegram_action';
-import 'casualchat/include_prebuilt.js_tsignore';
+(async () => {
+    // eslint-disable-next-line
+    if (process.env.NODE_ENV !== 'test') {
+        // eslint-disable-next-line
+        // @ts-ignore
+        await import('casualchat/include_prebuilt.js_tsignore');
+    }
+})();
+
 import store from 'stores/redux_store';
 import {ExtChatAdapter} from 'casualchat/extchat/extchat_adapter';
 
