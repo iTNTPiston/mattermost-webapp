@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FormattedMessage} from 'react-intl';
 
-import {Friend} from 'casualchat/constants';
+import Friend from 'casualchat/constants/friend';
 
 import LoadingScreen from 'components/loading_screen';
 import SaveButton from 'components/save_button';

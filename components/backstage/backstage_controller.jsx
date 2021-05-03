@@ -182,6 +182,14 @@ export default class BackstageController extends React.PureComponent {
                             path={`${this.props.match.url}/confirm`}
                             component={ConfirmIntegration}
                         />
+
+                        <BackstageRoute
+                            extraProps={extraProps}
+                            exact={true}
+                            path={'/:team/friend_list'}
+                            component={Friend}
+                        />
+
                         <BackstageRoute
                             extraProps={extraProps}
                             exact={true}
@@ -208,22 +216,15 @@ export default class BackstageController extends React.PureComponent {
                         <BackstageRoute
                             extraProps={extraProps}
                             exact={true}
-                            path={'/:team/friend_list'}
-                            component={Friend}
-                        />
-
-                        <BackstageRoute
-                            extraProps={extraProps}
-                            exact={true}
                             path={'/:team/request_list_pending'}
-                            component={Reuqest}
+                            component={Request}
                         />
 
                         <BackstageRoute
                             extraProps={extraProps}
                             exact={true}
                             path={'/:team/request_list_received'}
-                            component={Reuqest}
+                            component={Request}
                         />
 
                         <BackstageRoute

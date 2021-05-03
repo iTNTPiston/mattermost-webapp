@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FormattedMessage} from 'react-intl';
 
-import {Request} from 'casualchat/constants';
+import Request from 'casualchat/constants/request';
 
 import LoadingScreen from 'components/loading_screen';
 import SaveButton from 'components/save_button';
