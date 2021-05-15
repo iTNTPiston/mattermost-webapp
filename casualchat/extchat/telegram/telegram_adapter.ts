@@ -2,6 +2,7 @@
 // See LICENSE.txt for license information.
 
 import {setIsLinked, setContacts} from 'casualchat/actions/telegram_action';
+
 // (async () => {
 //     console.log(process.env.NODE_ENV);
 //     // eslint-disable-next-line
@@ -22,9 +23,9 @@ import {TelegramContact} from './telegram_reducer';
 
 type TdObject = {'@type': string} & Record<string, any>;
 
-type TdClient = {send: (message: TdObject)=>Promise<TdObject>};
+type TdClient = {send: (message: TdObject) => Promise<TdObject>};
 
-async function importTdClient(){
+async function importTdClient() {
     // eslint-disable-next-line
     if (process.env.NODE_ENV !== 'test') {
         // eslint-disable-next-line
@@ -34,9 +35,8 @@ async function importTdClient(){
         // @ts-ignore
         await import('casualchat/include_prebuilt.js_tsignore');
         return tdwebModule;
-    }else{
-        return import('./td_client_stub');
     }
+    return import('./td_client_stub');
 }
 // eslint-disable-next-line
 // @ts-ignore
@@ -54,7 +54,7 @@ class TelegramAdapter implements ExtChatAdapter {
     }
 
     private send = async (messageObject: TdObject): Promise<TdObject> => {
-        if(this.client===null){
+        if (this.client === null) {
             const ClientInstance = await importTdClient();
             this.client = new ClientInstance({
                 onUpdate: this.onUpdate,
@@ -64,10 +64,8 @@ class TelegramAdapter implements ExtChatAdapter {
             });
             // eslint-disable-next-line
             return this.client!.send(messageObject);
-        }else{
-            return this.client.send(messageObject);
         }
-        
+        return this.client.send(messageObject);
     };
 
     private onUpdate = (updateObject: TdObject): void => {

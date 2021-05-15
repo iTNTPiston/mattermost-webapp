@@ -4,6 +4,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {Modal} from 'react-bootstrap';
+
 import {ExtChatStub} from 'casualchat/extchat/extchat_adapter';
 import MoreDirectChannels from 'components/more_direct_channels/more_direct_channels';
 

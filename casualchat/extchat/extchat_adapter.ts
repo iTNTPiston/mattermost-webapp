@@ -12,29 +12,31 @@ export interface ExtChatAdapter {
     isReadyToSendCode: () => boolean;
 }
 
-class AdapterStub implements ExtChatAdapter{
-    async logOut(): Promise<any>{
-        
-    }
-    async pullContacts(): Promise<any>{
+class AdapterStub implements ExtChatAdapter {
+    async logOut(): Promise<any> {
 
     }
-    async sendMessage(externalId: string, message: string):Promise<any>{
+    async pullContacts(): Promise<any> {
 
     }
-    async logIn(username: string):Promise<any>{
+    // eslint-disable-next-line
+    async sendMessage(externalId: string, message: string): Promise<any> {
 
     }
-    async sendCode(code: string) :Promise<any>{
+    // eslint-disable-next-line
+    async logIn(username: string): Promise<any> {
 
     }
-    isReadyToLogin():boolean{
+    // eslint-disable-next-line
+    async sendCode(code: string): Promise<any> {
+
+    }
+    isReadyToLogin(): boolean {
         return true;
     }
-    isReadyToSendCode() :boolean{
+    isReadyToSendCode(): boolean {
         return true;
     }
-    
 }
 export type ExtChat = {
     telegram: ExtChatAdapter;
@@ -46,4 +48,4 @@ export default {
 
 export const ExtChatStub = {
     telegram: AdapterStub,
-}
+};
