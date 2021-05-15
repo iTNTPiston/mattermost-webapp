@@ -1,18 +1,17 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-// eslint-disable-next-line
-// @ts-ignore
-import TdClient from 'tdweb';
 import {setIsLinked, setContacts} from 'casualchat/actions/telegram_action';
-(async () => {
-    // eslint-disable-next-line
-    if (process.env.NODE_ENV !== 'test') {
-        // eslint-disable-next-line
-        // @ts-ignore
-        await import('casualchat/include_prebuilt.js_tsignore');
-    }
-})();
+// (async () => {
+//     console.log(process.env.NODE_ENV);
+//     // eslint-disable-next-line
+//     if (process.env.NODE_ENV !== 'test') {
+//         import TdClient from 'tdweb';
+//         // eslint-disable-next-line
+//         // @ts-ignore
+//         await import('casualchat/include_prebuilt.js_tsignore');
+//     }
+// })();
 
 import store from 'stores/redux_store';
 import {ExtChatAdapter} from 'casualchat/extchat/extchat_adapter';
@@ -20,26 +19,55 @@ import {ExtChatAdapter} from 'casualchat/extchat/extchat_adapter';
 import {getExtRefByChannel, postToExtChannel, getExtChannelByExternalId} from 'casualchat/CasualChatClient';
 
 import {TelegramContact} from './telegram_reducer';
+
 type TdObject = {'@type': string} & Record<string, any>;
 
+type TdClient = {send: (message: TdObject)=>Promise<TdObject>};
+
+async function importTdClient(){
+    // eslint-disable-next-line
+    if (process.env.NODE_ENV !== 'test') {
+        // eslint-disable-next-line
+        // @ts-ignore
+        const tdwebModule = await import('tdweb');
+        // eslint-disable-next-line
+        // @ts-ignore
+        await import('casualchat/include_prebuilt.js_tsignore');
+        return tdwebModule;
+    }else{
+        return import('./td_client_stub');
+    }
+}
+// eslint-disable-next-line
+// @ts-ignore
+//const TdClient = importTdClient();
+
 class TelegramAdapter implements ExtChatAdapter {
-    client: TdClient;
+    client: TdClient | null;
     readyToLogin: boolean;
     readyToSendCode: boolean;
 
     constructor() {
-        this.client = new TdClient({
-            onUpdate: this.onUpdate,
-            jsLogVerbosityLevel: 'INFO',
-            instanceName: 'casualchat-tdweb',
-            isBackground: true,
-        });
+        this.client = null;
         this.readyToLogin = false;
         this.readyToSendCode = false;
     }
 
     private send = async (messageObject: TdObject): Promise<TdObject> => {
-        return this.client.send(messageObject);
+        if(this.client===null){
+            const ClientInstance = await importTdClient();
+            this.client = new ClientInstance({
+                onUpdate: this.onUpdate,
+                jsLogVerbosityLevel: 'INFO',
+                instanceName: 'casualchat-tdweb',
+                isBackground: true,
+            });
+            // eslint-disable-next-line
+            return this.client!.send(messageObject);
+        }else{
+            return this.client.send(messageObject);
+        }
+        
     };
 
     private onUpdate = (updateObject: TdObject): void => {

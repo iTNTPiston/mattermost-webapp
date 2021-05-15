@@ -11,6 +11,31 @@ export interface ExtChatAdapter {
     isReadyToLogin: () => boolean;
     isReadyToSendCode: () => boolean;
 }
+
+class AdapterStub implements ExtChatAdapter{
+    async logOut(): Promise<any>{
+        
+    }
+    async pullContacts(): Promise<any>{
+
+    }
+    async sendMessage(externalId: string, message: string):Promise<any>{
+
+    }
+    async logIn(username: string):Promise<any>{
+
+    }
+    async sendCode(code: string) :Promise<any>{
+
+    }
+    isReadyToLogin():boolean{
+        return true;
+    }
+    isReadyToSendCode() :boolean{
+        return true;
+    }
+    
+}
 export type ExtChat = {
     telegram: ExtChatAdapter;
 }
@@ -18,3 +43,7 @@ export type ExtChat = {
 export default {
     telegram
 };
+
+export const ExtChatStub = {
+    telegram: AdapterStub,
+}

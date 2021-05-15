@@ -4,13 +4,16 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {Modal} from 'react-bootstrap';
-
+import {ExtChatStub} from 'casualchat/extchat/extchat_adapter';
 import MoreDirectChannels from 'components/more_direct_channels/more_direct_channels';
 
 describe('components/MoreDirectChannels', () => {
     function emptyFunction() {} //eslint-disable-line no-empty-function
 
     const baseProps = {
+        isLinked: false,
+        telegramContacts: [],
+        extchat: ExtChatStub,
         currentUserId: 'current_user_id',
         currentTeamId: 'team_id',
         currentTeamName: 'team_name',
