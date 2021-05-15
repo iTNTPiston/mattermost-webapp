@@ -52,8 +52,8 @@ export default class FriendListItem extends React.PureComponent {
             <DeleteFriend
                 onDelete={this.handleDelete}
 
-                // isPrivate={this.props.isPrivate}
-                // isOwner={true}
+                //isPrivate={this.props.isPrivate}
+                //isOwner={true}
             />);
 
         return (
