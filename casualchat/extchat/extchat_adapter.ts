@@ -42,10 +42,11 @@ export type ExtChat = {
     telegram: ExtChatAdapter;
 }
 
+export const ExtChatStub = {
+    telegram: new AdapterStub(),
+};
+
 export default {
     telegram
 };
 
-export const ExtChatStub = {
-    telegram: AdapterStub,
-};
