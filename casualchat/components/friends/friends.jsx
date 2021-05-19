@@ -49,7 +49,7 @@ export default class FriendPage extends React.PureComponent {
                             defaultMessage='Friends List'
                         />
                     </h1>
-{/* 
+
                     <Link
                         className='add-link'
                         to={'/' + this.props.teamName + '/'}
@@ -59,11 +59,11 @@ export default class FriendPage extends React.PureComponent {
                             className='btn btn-primary'
                         >
                             <FormattedMessage
-                                id='emoji_list.add-private'
-                                defaultMessage='Add Private Emoji'
+                                id='frient_list.add'
+                                defaultMessage='Add Friend'
                             />
                         </button>
-                    </Link> */}
+                    </Link>
 
                 </div>
                 <FriendList

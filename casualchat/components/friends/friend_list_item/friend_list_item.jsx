@@ -9,11 +9,14 @@ import PropTypes from 'prop-types';
 
 // import DeleteEmoji from 'casualchat/components/friends/delete_friend_modal.jsx';
 // import AnyTeamPermissionGate from 'components/permissions_gates/any_team_permission_gate';
-import DeleteFriend from 'casualchat/components/friends/delete_friend_modal.jsx';
+import DeleteFriend from 'casualchat/components/friends/delete_friend_modal';
 
 export default class FriendListItem extends React.PureComponent {
     static propTypes = {
-        friend: PropTypes.object.isRequired,
+        friend: PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            id: PropTypes.string.isRequired,
+        }),
         currentUserId: PropTypes.string.isRequired,
         creatorDisplayName: PropTypes.string.isRequired,
         creatorUsername: PropTypes.string,
@@ -48,30 +51,22 @@ export default class FriendListItem extends React.PureComponent {
         //     creatorDisplayName += ' (@' + creatorUsername + ')';
         // }
 
-        const deleteButton = (
-            <DeleteFriend
-                onDelete={this.handleDelete}
-
-                //isPrivate={this.props.isPrivate}
-                //isOwner={true}
-            />);
 
         return (
             <tr className='backstage-list__item'>
-                <td className='friend-list__name'>
-                    {':' + friend.name + ':'}
+                <td className='emoji-list__name'>
+                    {friend.name}
                 </td>
-                <td className='friend-list__image'>
+                <td className='emoji-list__image'>
                     {/* <span
                         className='emoticon'
                         style={{backgroundImage: 'url(' + Client4.getCustomEmojiImageUrl(emoji.id) + ')'}}
                     /> */}
                 </td>
-                {/* <td className='emoji-list__creator'>
-                    {creatorDisplayName}
-                </td> */}
-                <td className='friend-list-item_actions'>
-                    {deleteButton}
+                <td className='emoji-list-item_actions'>
+                <DeleteFriend
+                onDelete={this.handleDelete}
+            />
                 </td>
             </tr>
         );
