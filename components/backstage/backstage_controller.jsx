@@ -220,23 +220,12 @@ export default class BackstageController extends React.PureComponent {
                             component={AddEmoji}
                         />
 
-<<<<<<< HEAD
-
-=======
                         <BackstageRoute
                             extraProps={extraProps}
                             exact={true}
-                            path={'/:team/request_list_pending'}
+                            path={'/:team/request_list'}
                             component={Request}
                         />
-
-                        <BackstageRoute
-                            extraProps={extraProps}
-                            exact={true}
-                            path={'/:team/request_list_received'}
-                            component={Request}
-                        />
->>>>>>> 1c262db16838ca2975c0d611d81aa1b9d60a4d38
 
                         <BackstageRoute
                             extraProps={extraProps}
