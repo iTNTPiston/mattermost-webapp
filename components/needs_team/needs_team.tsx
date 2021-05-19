@@ -305,6 +305,10 @@ export default class NeedsTeam extends React.PureComponent<Props, State> {
                     path={'/:team/emoji_private'}
                     component={BackstageController}
                 />
+                <Route
+                    path={'/:team/friend_list'}
+                    component={BackstageController}
+                />
                 {this.props.plugins?.map((plugin: any) => (
                     <Route
                         key={plugin.id}

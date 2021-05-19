@@ -14,6 +14,7 @@ import SystemNotice from 'components/system_notice';
 import Integrations from 'components/integrations';
 import Emoji from 'components/emoji';
 import EmojiPrivate from 'casualchat/components/emoji-private';
+import Friends from 'casualchat/components/friends';
 import AddEmoji from 'components/emoji/add_emoji';
 import InstalledIncomingWebhooks from 'components/integrations/installed_incoming_webhooks';
 import AddIncomingWehook from 'components/integrations/add_incoming_webhook';
@@ -183,6 +184,12 @@ export default class BackstageController extends React.PureComponent {
                         <BackstageRoute
                             extraProps={extraProps}
                             exact={true}
+                            path={'/:team/friend_list'}
+                            component={Friends}
+                        />
+                        <BackstageRoute
+                            extraProps={extraProps}
+                            exact={true}
                             path={'/:team/emoji_private'}
                             component={EmojiPrivate}
                         />
@@ -203,12 +210,7 @@ export default class BackstageController extends React.PureComponent {
                             component={AddEmoji}
                         />
 
-                        <BackstageRoute
-                            extraProps={extraProps}
-                            exact={true}
-                            path={'/:team/friend_list'}
-                            component={EmojiPrivate}
-                        />
+
 
                         <BackstageRoute
                             extraProps={extraProps}

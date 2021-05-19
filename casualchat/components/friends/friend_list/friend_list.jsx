@@ -262,7 +262,7 @@ export default class FriendList extends React.PureComponent {
                         <LocalizedInput
                             type='search'
                             className='form-control'
-                            placeholder={{id: t('friend_list.search'), defaultMessage: 'Search Friend'}}
+                            placeholder={{id: t('friends_list.search'), defaultMessage: 'Search Friend'}}
                             onChange={this.onSearchChange}
                             style={style.search}
                         />
@@ -283,30 +283,24 @@ export default class FriendList extends React.PureComponent {
                     </p>
                 </span> */}
                 <div className='backstage-list'>
-                    <table className='friend-list__table'>
+                    <table className='emoji-list__table'>
                         <thead>
-                            <tr className='backstage-list__item friend-list__table-header'>
-                                <th className='friend-list__name'>
+                            <tr className='backstage-list__item emoji-list__table-header'>
+                                <th className='emoji-list__name'>
                                     <FormattedMessage
-                                        id='friend_list.name'
+                                        id='friends_list.name'
                                         defaultMessage='Name'
                                     />
                                 </th>
-                                <th className='friend-list__image'>
+                                <th className='emoji-list__image'>
                                     <FormattedMessage
                                         id='friend_list.image'
                                         defaultMessage='Image'
                                     />
                                 </th>
-                                {/* <th className='friend-list__creator'>
+                                <th className='emoji-list_actions'>
                                     <FormattedMessage
-                                        id='friend_list.creator'
-                                        defaultMessage='Creator'
-                                    />
-                                </th> */}
-                                <th className='friend-list_actions'>
-                                    <FormattedMessage
-                                        id='friend_list.actions'
+                                        id='friends_list.actions'
                                         defaultMessage='Actions'
                                     />
                                 </th>
