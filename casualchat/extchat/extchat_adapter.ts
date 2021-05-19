@@ -11,10 +11,42 @@ export interface ExtChatAdapter {
     isReadyToLogin: () => boolean;
     isReadyToSendCode: () => boolean;
 }
+
+class AdapterStub implements ExtChatAdapter {
+    async logOut(): Promise<any> {
+
+    }
+    async pullContacts(): Promise<any> {
+
+    }
+    // eslint-disable-next-line
+    async sendMessage(externalId: string, message: string): Promise<any> {
+
+    }
+    // eslint-disable-next-line
+    async logIn(username: string): Promise<any> {
+
+    }
+    // eslint-disable-next-line
+    async sendCode(code: string): Promise<any> {
+
+    }
+    isReadyToLogin(): boolean {
+        return true;
+    }
+    isReadyToSendCode(): boolean {
+        return true;
+    }
+}
 export type ExtChat = {
     telegram: ExtChatAdapter;
 }
 
+export const ExtChatStub = {
+    telegram: new AdapterStub(),
+};
+
 export default {
     telegram
 };
+

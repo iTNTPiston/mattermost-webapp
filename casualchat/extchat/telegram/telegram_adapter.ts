@@ -1,36 +1,66 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-// @ts-ignore
-import TdClient from 'tdweb';
 import {setIsLinked, setContacts} from 'casualchat/actions/telegram_action';
-import 'casualchat/include_prebuilt.js_tsignore';
+
 import store from 'stores/redux_store';
 import {ExtChatAdapter} from 'casualchat/extchat/extchat_adapter';
 
-// import {getExtRefByChannel, postToExtChannel, getExtChannelByExternalId} from 'casualchat/CasualChatClient';
-// import {getExtChannelByExternalId} from 'casualchat/CasualChatClient';
+import {getExtRefByChannel, postToExtChannel, getExtChannelByExternalId} from 'casualchat/CasualChatClient';
 
 import {TelegramContact} from './telegram_reducer';
+
 type TdObject = {'@type': string} & Record<string, any>;
 
+type TdClient = {send: (message: TdObject) => Promise<TdObject>};
+
+async function importTdClient() {
+    // eslint-disable-next-line
+    if (process.env.NODE_ENV !== 'test') {
+        // eslint-disable-next-line
+        // @ts-ignore
+        await import(/* webpackMode: "eager" */'casualchat/extchat/telegram/include_prebuilt.js_tsignore');
+        // eslint-disable-next-line
+        // @ts-ignore
+        const {default: TdClientConstructor} = await import('tdweb');
+        return TdClientConstructor;
+    }
+    const {default: TdClientConstructor} = await import('./td_client_stub');
+    return TdClientConstructor;
+}
+
 class TelegramAdapter implements ExtChatAdapter {
-    client: TdClient;
+    client: TdClient | null;
     readyToLogin: boolean;
     readyToSendCode: boolean;
 
     constructor() {
-        this.client = new TdClient({
+        this.client = null;
+        this.readyToLogin = false;
+        this.readyToSendCode = false;
+        this.checkClient();
+    }
+
+    private checkClient = async (): Promise<TdClient> => {
+        if (this.client !== null) {
+            return this.client;
+        }
+
+        const ClientInstance = await importTdClient();
+        const newClient = new ClientInstance({
             onUpdate: this.onUpdate,
             jsLogVerbosityLevel: 'INFO',
             instanceName: 'casualchat-tdweb',
             isBackground: true,
         });
-        this.readyToLogin = false;
-        this.readyToSendCode = false;
+        this.client = newClient;
+        return newClient;
     }
 
     private send = async (messageObject: TdObject): Promise<TdObject> => {
+        if (this.client === null) {
+            return {'@type': 'NotReady'};
+        }
         return this.client.send(messageObject);
     };
 
@@ -126,7 +156,7 @@ class TelegramAdapter implements ExtChatAdapter {
 
     logIn = async (username: string): Promise<any> => {
         if (!this.readyToLogin) {
-            throw new Error('Not ready to login');
+            return;
         }
         await this.send({
             '@type': 'setAuthenticationPhoneNumber',

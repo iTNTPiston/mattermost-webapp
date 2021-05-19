@@ -19,44 +19,19 @@ export default class DeleteFriend extends DeleteModalTrigger {
 
     get triggerTitle() {
         return (
-
-            // <If condition={this.props.isPrivate && !this.props.isOwner}>
-            //     <Then>
-            //         <FormattedMessage
-            //             id='emoji_list.remove_access'
-            //             defaultMessage='Remove Access'
-            //         />
-            //     </Then>
-            //     <Else>
             <FormattedMessage
                 id='friend_list.delete'
-                defaultMessage='Delete Friend'
+                defaultMessage='Delete'
             />
-
-        //     </Else>
-        // </If>
-
         );
     }
 
     get modalTitle() {
         return (
-
-            // <If condition={this.props.isPrivate && !this.props.isOwner}>
-            //     <Then>
-            //         <FormattedMessage
-            //             id='emoji_list.remove_access.confirm.title'
-            //             defaultMessage='Remove Emoji Access'
-            //         />
-            //     </Then>
-            //     <Else>
             <FormattedMessage
                 id='friend_list.delete.confirm.title'
                 defaultMessage='Delete Friend'
             />
-
-        //     </Else>
-        // </If>
         );
     }
 
@@ -74,7 +49,7 @@ export default class DeleteFriend extends DeleteModalTrigger {
                     <Else> */}
                 <FormattedMessage
                     id='friend_list.delete.confirm.msg'
-                    defaultMessage='This action permanently removes this friend of yours. Are you sure you want to delete them?'
+                    defaultMessage='This action permanently removes this friend. Are you sure?'
                 />
                 {/* </Else>
                 </If> */}
