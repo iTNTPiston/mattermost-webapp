@@ -14,6 +14,7 @@ import SystemNotice from 'components/system_notice';
 import Integrations from 'components/integrations';
 import Emoji from 'components/emoji';
 import EmojiPrivate from 'casualchat/components/emoji-private';
+import Friends from 'casualchat/components/friends';
 import AddEmoji from 'components/emoji/add_emoji';
 import Friend from 'casualchat/components/friends'
 import Request from 'casualchat/components/requests'
@@ -193,6 +194,12 @@ export default class BackstageController extends React.PureComponent {
                         <BackstageRoute
                             extraProps={extraProps}
                             exact={true}
+                            path={'/:team/friend_list'}
+                            component={Friends}
+                        />
+                        <BackstageRoute
+                            extraProps={extraProps}
+                            exact={true}
                             path={'/:team/emoji_private'}
                             component={EmojiPrivate}
                         />
@@ -216,14 +223,7 @@ export default class BackstageController extends React.PureComponent {
                         <BackstageRoute
                             extraProps={extraProps}
                             exact={true}
-                            path={'/:team/request_list_pending'}
-                            component={Request}
-                        />
-
-                        <BackstageRoute
-                            extraProps={extraProps}
-                            exact={true}
-                            path={'/:team/request_list_received'}
+                            path={'/:team/request_list'}
                             component={Request}
                         />
 

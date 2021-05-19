@@ -8,18 +8,15 @@ import {Link} from 'react-router-dom';
 
 import * as Utils from 'utils/utils.jsx';
 
-import EmojiList from 'components/emoji/emoji_list';
+import FriendList from 'casualchat/components/friends/friend_list';
 
-export default class EmojiPage extends React.PureComponent {
+export default class FriendPage extends React.PureComponent {
     static propTypes = {
         teamId: PropTypes.string.isRequired,
         teamName: PropTypes.string.isRequired,
         teamDisplayName: PropTypes.string.isRequired,
         siteName: PropTypes.string,
         scrollToTop: PropTypes.func.isRequired,
-        actions: PropTypes.shape({
-            loadRolesIfNeeded: PropTypes.func.isRequired,
-        }).isRequired,
     }
 
     static defaultProps = {
@@ -30,11 +27,10 @@ export default class EmojiPage extends React.PureComponent {
 
     componentDidMount() {
         this.updateTitle();
-        this.props.actions.loadRolesIfNeeded(['system_admin', 'team_admin', 'system_user', 'team_user']);
     }
 
     updateTitle = () => {
-        document.title = Utils.localizeMessage('custom_emoji.header-private2', 'My Friends List') + ' - ' + this.props.teamDisplayName + ' ' + this.props.siteName;
+        document.title = Utils.localizeMessage('friends_list.header-private', 'Friends List') + ' - ' + this.props.teamDisplayName + ' ' + this.props.siteName;
     }
 
     componentDidUpdate(prevProps) {
@@ -49,30 +45,29 @@ export default class EmojiPage extends React.PureComponent {
                 <div className='backstage-header'>
                     <h1>
                         <FormattedMessage
-                            id='emoji_list.header-private2'
-                            defaultMessage='My Friends List'
+                            id='friends_list.header-private'
+                            defaultMessage='Friends List'
                         />
                     </h1>
 
                     <Link
                         className='add-link'
-                        to={'/' + this.props.teamName + '/emoji_private/add_private'}
+                        to={'/' + this.props.teamName + '/'}
                     >
                         <button
                             type='button'
                             className='btn btn-primary'
                         >
                             <FormattedMessage
-                                id='emoji_list.add-private2'
-                                defaultMessage='Add More Friends'
+                                id='frient_list.add'
+                                defaultMessage='Add Friend'
                             />
                         </button>
                     </Link>
 
                 </div>
-                <EmojiList
+                <FriendList
                     scrollToTop={this.props.scrollToTop}
-                    isPrivate={true}
                 />
             </div>
         );

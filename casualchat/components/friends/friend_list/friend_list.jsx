@@ -64,14 +64,19 @@ export default class FriendList extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.props.actions.getFriends(0, FRIEND_PER_PAGE + 1, Friend.SORT_BY_NAME, true).then(({data}) => {
-            this.setState({loading: false});
-            if (data && data.length < FRIEND_PER_PAGE) {
-                this.setState({
-                    missingPages: false,
-                    friendIds: data.map(({id}) => id),
-                });
-            }
+        // this.props.actions.getFriends(0, FRIEND_PER_PAGE + 1, Friend.SORT_BY_NAME, true).then(({data}) => {
+        //     this.setState({loading: false});
+        //     if (data && data.length < FRIEND_PER_PAGE) {
+        //         this.setState({
+        //             missingPages: false,
+        //             friendIds: data.map(({id}) => id),
+        //         });
+        //     }
+        // });
+        this.setState({loading: false});
+        this.setState({
+            missingPages: false,
+            friendIds: [this.props.userId],
         });
     }
 
@@ -82,18 +87,22 @@ export default class FriendList extends React.PureComponent {
 
         const next = this.state.page + 1;
         this.setState({nextLoading: true});
-
-        this.props.actions.getFriends(next, FRIEND_PER_PAGE, Friend.SORT_BY_NAME, true).then(({data}) => {
-            this.setState({page: next, nextLoading: false});
-            if (data && data.length < FRIEND_PER_PAGE) {
-                this.setState({
-                    missingPages: false,
-                    friendIds: data.map(({id}) => id),
-                });
-            }
-
-            this.props.scrollToTop();
+        this.setState({
+            missingPages: false,
+            friendIds: [this.props.userId],
         });
+
+        // this.props.actions.getFriends(next, FRIEND_PER_PAGE, Friend.SORT_BY_NAME, true).then(({data}) => {
+        //     this.setState({page: next, nextLoading: false});
+        //     if (data && data.length < FRIEND_PER_PAGE) {
+        //         this.setState({
+        //             missingPages: false,
+        //             friendIds: data.map(({id}) => id),
+        //         });
+        //     }
+
+        //     this.props.scrollToTop();
+        // });
     }
 
     previousPage = (e) => {
@@ -258,51 +267,40 @@ export default class FriendList extends React.PureComponent {
                         <LocalizedInput
                             type='search'
                             className='form-control'
-                            placeholder={{id: t('friend_list.search'), defaultMessage: 'Search Friend'}}
+                            placeholder={{id: t('friends_list.search'), defaultMessage: 'Search Friend'}}
                             onChange={this.onSearchChange}
                             style={style.search}
                         />
                     </div>
                 </div>
-                {/* <span className='backstage-list__help'>
-                    <p>
-                        <FormattedMessage
-                            id='friend_list.help'
-                            defaultMessage="Friends List are available to everyone on your server. Type ':' followed by two characters in a message box to bring up the friend selection menu."
-                        />
-                    </p>
-                    <p>
-                        <FormattedMessage
-                            id='friend_list.help2'
-                            defaultMessage="Tip: If you add #, ##, or ### as the first character on a new line containing friend, you can use larger sized friend. To try it out, send a message such as: '# :smile:'."
-                        />
-                    </p>
-                </span> */}
+                <span className='backstage-list__help'>
+                <p>
+                            <FormattedMessage
+                                id='emoji_list.help3'
+                                defaultMessage="You can only send direct messages to your friends."
+                            />
+                        </p>
+
+                </span>
                 <div className='backstage-list'>
-                    <table className='friend-list__table'>
+                    <table className='emoji-list__table'>
                         <thead>
-                            <tr className='backstage-list__item friend-list__table-header'>
-                                <th className='friend-list__name'>
+                            <tr className='backstage-list__item emoji-list__table-header'>
+                                <th className='emoji-list__name'>
                                     <FormattedMessage
-                                        id='friend_list.name'
+                                        id='friends_list.name'
                                         defaultMessage='Name'
                                     />
                                 </th>
-                                <th className='friend-list__image'>
+                                <th className='emoji-list__image'>
                                     <FormattedMessage
                                         id='friend_list.image'
                                         defaultMessage='Image'
                                     />
                                 </th>
-                                {/* <th className='friend-list__creator'>
+                                <th className='emoji-list_actions'>
                                     <FormattedMessage
-                                        id='friend_list.creator'
-                                        defaultMessage='Creator'
-                                    />
-                                </th> */}
-                                <th className='friend-list_actions'>
-                                    <FormattedMessage
-                                        id='friend_list.actions'
+                                        id='friends_list.actions'
                                         defaultMessage='Actions'
                                     />
                                 </th>

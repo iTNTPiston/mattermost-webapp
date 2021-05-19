@@ -5,9 +5,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
-import {loadRolesIfNeeded} from 'mattermost-redux/actions/roles';
+// import {loadRolesIfNeeded} from 'mattermost-redux/actions/roles';
 
-import FriendPage from 'casualchat/components/friends/friend_page.jsx'
+import FriendPage from './friends.jsx';
 
 function mapStateToProps(state) {
     const team = getCurrentTeam(state) || {};
@@ -19,12 +19,12 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators({
-            loadRolesIfNeeded,
-        }, dispatch),
-    };
-}
+// function mapDispatchToProps(dispatch) {
+//     return {
+//         actions: bindActionCreators({
+//             // loadRolesIfNeeded,
+//         }, dispatch),
+//     };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendPage);
+export default connect(mapStateToProps)(FriendPage);

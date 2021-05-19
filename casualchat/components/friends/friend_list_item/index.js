@@ -14,13 +14,19 @@ import {getDisplayNameByUser} from 'utils/utils.jsx';
 import FriendListItem from 'casualchat/components/friends/friend_list_item/friend_list_item.jsx';
 
 function mapStateToProps(state, ownProps) {
-    const emoji = state.entities.emojis.customEmoji[ownProps.emojiId];
-    const creator = getUser(state, emoji.creator_id);
+  
+    const friendUser = getUser(state, ownProps.friendId);
+    const friend = {
+        name: getDisplayNameByUser(state, friendUser),
+        id: ownProps.friendId,
+    }
+    //const emoji = state.entities.emojis.customEmoji[ownProps.friendId];
+   // const creator = getUser(state, emoji.creator_id);
 
     return {
-        emoji,
-        creatorDisplayName: getDisplayNameByUser(state, creator),
-        creatorUsername: creator ? creator.username : '',
+        friend,
+        //creatorDisplayName: getDisplayNameByUser(state, creator),
+        //creatorUsername: creator ? creator.username : '',
         currentUserId: getCurrentUserId(state),
         currentTeam: getCurrentTeam(state),
     };

@@ -1805,7 +1805,7 @@
   "flag_post.flag": "保存",
   "flag_post.unflag": "从保存移除",
   "friend_list.actions": "操作",
-  "friend_list.delete": "删除好友",
+  "friend_list.delete": "删除",
   "friend_list.delete.confirm.button": "删除",
   "friend_list.delete.confirm.msg": "确认删除此好友？",
   "friend_list.delete.confirm.title": "删除好友",
