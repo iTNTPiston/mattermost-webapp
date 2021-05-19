@@ -5,11 +5,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FormattedMessage} from 'react-intl';
 
-import Friend from 'casualchat/constants/friend';
+import Request from 'casualchat/constants/request';
 
 import LoadingScreen from 'components/loading_screen';
 import SaveButton from 'components/save_button';
-import FriendListItem from 'casualchat/components/friends/friend_list_item';
+import RequestListItem from 'casualchat/components/requests/request_list_item';
 import NextIcon from 'components/widgets/icons/fa_next_icon';
 import PreviousIcon from 'components/widgets/icons/fa_previous_icon';
 import SearchIcon from 'components/widgets/icons/fa_search_icon';
@@ -17,17 +17,17 @@ import LocalizedInput from 'components/localized_input/localized_input';
 
 import {t} from 'utils/i18n.jsx';
 
-const FRIEND_PER_PAGE = 50;
-const FRIEND_SEARCH_DELAY_MILLISECONDS = 200;
+const REQUEST_PER_PAGE = 50;
+const REQUEST_SEARCH_DELAY_MILLISECONDS = 200;
 
-export default class FriendList extends React.PureComponent {
+export default class RequestList extends React.PureComponent {
     static propTypes = {
 
         /**
-         * Custom friends on the system.
+         * Custom requests on the system.
          */
-        //friendIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-        userId: PropTypes.string.isRequired,
+        //requestIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+        requestId: PropTypes.string.isRequired,
 
         /**
          * Function to scroll list to top.
@@ -37,15 +37,18 @@ export default class FriendList extends React.PureComponent {
         actions: PropTypes.shape({
 
             /**
-             * Get pages of friends.
+             * Get pages of requests.
              */
-            getFriends: PropTypes.func.isRequired,
+            getRequests: PropTypes.func.isRequired,
 
             /**
-             * Search friends.
+             * Search requests.
              */
-            searchFriends: PropTypes.func.isRequired,
+            searchRequests: PropTypes.func.isRequired,
         }).isRequired,
+
+        // isPending
+        // isReceived
     }
 
     constructor(props) {
@@ -57,19 +60,19 @@ export default class FriendList extends React.PureComponent {
             loading: true,
             page: 0,
             nextLoading: false,
-            searchFriends: null,
+            searchRequests: null,
             missingPages: true,
-            friendIds: [],
+            requestIds: [],
         };
     }
 
     componentDidMount() {
-        this.props.actions.getFriends(0, FRIEND_PER_PAGE + 1, Friend.SORT_BY_NAME, true).then(({data}) => {
+        this.props.actions.getRequests(0, REQUEST_PER_PAGE + 1, Request.SORT_BY_NAME, true).then(({data}) => {
             this.setState({loading: false});
-            if (data && data.length < FRIEND_PER_PAGE) {
+            if (data && data.length < REQUEST_PER_PAGE) {
                 this.setState({
                     missingPages: false,
-                    friendIds: data.map(({id}) => id),
+                    requestIds: data.map(({id}) => id),
                 });
             }
         });
@@ -83,12 +86,12 @@ export default class FriendList extends React.PureComponent {
         const next = this.state.page + 1;
         this.setState({nextLoading: true});
 
-        this.props.actions.getFriends(next, FRIEND_PER_PAGE, Friend.SORT_BY_NAME, true).then(({data}) => {
+        this.props.actions.getRequests(next, REQUEST_PER_PAGE, Request.SORT_BY_NAME, true).then(({data}) => {
             this.setState({page: next, nextLoading: false});
-            if (data && data.length < FRIEND_PER_PAGE) {
+            if (data && data.length < REQUEST_PER_PAGE) {
                 this.setState({
                     missingPages: false,
-                    friendIds: data.map(({id}) => id),
+                    requestIds: data.map(({id}) => id),
                 });
             }
 
@@ -116,52 +119,52 @@ export default class FriendList extends React.PureComponent {
 
         this.searchTimeout = setTimeout(async () => {
             if (term.trim() === '') {
-                this.setState({searchFriends: null, page: 0});
+                this.setState({searchRequests: null, page: 0});
                 return;
             }
 
             this.setState({loading: true});
 
-            const response = await this.props.actions.searchFriends(term, {}, true);
+            const response = await this.props.actions.searchRequests(term, {}, true);
 
             const {data} = response;
             if (data) {
-                this.setState({searchFriends: data.map((em) => em.id), loading: false});
+                this.setState({searchRequests: data.map((em) => em.id), loading: false});
             } else {
-                this.setState({searchFriends: [], loading: false});
+                this.setState({searchRequests: [], loading: false});
             }
-        }, FRIEND_SEARCH_DELAY_MILLISECONDS);
+        }, REQUEST_SEARCH_DELAY_MILLISECONDS);
     }
 
-    onDeleteFriend = (friendId) => {
-        this.deleteFromSearch(friendId);
-        this.deleteFromIds(friendId);
+    onDeleteRequest = (requestId) => {
+        this.deleteFromSearch(requestId);
+        this.deleteFromIds(requestId);
     }
 
-    deleteFromSearch = (friendId) => {
-        if (!this.state.searchFriends) {
+    deleteFromSearch = (requestId) => {
+        if (!this.state.searchReuqests) {
             return;
         }
 
-        this.setState({searchFriends: this.state.searchFriends.filter((id) => id !== friendId)});
+        this.setState({searchRquests: this.state.searchRequests.filter((id) => id !== requestId)});
     }
 
-    deleteFromIds =(friendId) => {
-        if (!this.state.friendIds) {
+    deleteFromIds =(requestId) => {
+        if (!this.state.requestIds) {
             return;
         }
 
-        this.setState({friendIds: this.state.friendIds.filter((id) => id !== friendId)});
+        this.setState({requestIds: this.state.requestIds.filter((id) => id !== requestId)});
     }
 
     render() {
-        const searchFriends = this.state.searchFriends;
-        const friends = [];
+        const searchRequests = this.state.searchRequests;
+        const requests = [];
         let nextButton;
         let previousButton;
 
         if (this.state.loading) {
-            friends.push(
+            requests.push(
                 <tr
                     key='loading'
                     className='backstage-list__item backstage-list__empty'
@@ -171,41 +174,41 @@ export default class FriendList extends React.PureComponent {
                     </td>
                 </tr>,
             );
-        } else if (this.state.friendIds.length === 0 || (searchFriends && searchFriends.length === 0)) {
-            friends.push(
+        } else if (this.state.requestIds.length === 0 || (searchRequests && searchRequests.length === 0)) {
+            requests.push(
                 <tr
                     key='empty'
                     className='backstage-list__item backstage-list__empty'
                 >
                     <td colSpan='4'>
                         <FormattedMessage
-                            id='friend_list.empty'
-                            defaultMessage='No friends found'
+                            id='request_list.empty'
+                            defaultMessage='No requests found'
                         />
                     </td>
                 </tr>,
             );
-        } else if (searchFriends) {
-            searchFriends.forEach((friendId) => {
-                friends.push(
-                    <FriendListItem
-                        key={'friend_search_item' + friendId}
-                        friendId={friendId}
-                        onDelete={this.onDeleteFriend}
+        } else if (searchRequests) {
+            searchRequests.forEach((requestId) => {
+                requests.push(
+                    <RequestListItem
+                        key={'request_search_item' + requestId}
+                        requestId={requestId}
+                        onDelete={this.onDeleteRequest}
                     />,
                 );
             });
         } else {
             const pageStart = this.state.page * FRIEND_PER_PAGE;
             const pageEnd = pageStart + FRIEND_PER_PAGE;
-            const friendsToDisplay = this.state.friendIds.slice(pageStart, pageEnd);
+            const requestsToDisplay = this.state.requestIds.slice(pageStart, pageEnd);
 
-            friendsToDisplay.forEach((friendId) => {
-                friends.push(
-                    <FriendListItem
-                        key={'friend_list_item' + friendId}
-                        friendId={friendId}
-                        onDelete={this.onDeleteFriend}
+            requestsToDisplay.forEach((requestId) => {
+                requests.push(
+                    <RequestListItem
+                        key={'request_list_item' + requestId}
+                        requestId={requestId}
+                        onDelete={this.onDeleteRequest}
                     />,
                 );
             });
@@ -258,7 +261,7 @@ export default class FriendList extends React.PureComponent {
                         <LocalizedInput
                             type='search'
                             className='form-control'
-                            placeholder={{id: t('friends_list.search'), defaultMessage: 'Search Friend'}}
+                            placeholder={{id: t('request_list.search'), defaultMessage: 'Search Request'}}
                             onChange={this.onSearchChange}
                             style={style.search}
                         />
@@ -267,43 +270,49 @@ export default class FriendList extends React.PureComponent {
                 {/* <span className='backstage-list__help'>
                     <p>
                         <FormattedMessage
-                            id='friend_list.help'
-                            defaultMessage="Friends List are available to everyone on your server. Type ':' followed by two characters in a message box to bring up the friend selection menu."
+                            id='request_list.help'
+                            defaultMessage="Requests List are available to everyone on your server. Type ':' followed by two characters in a message box to bring up the request selection menu."
                         />
                     </p>
                     <p>
                         <FormattedMessage
-                            id='friend_list.help2'
-                            defaultMessage="Tip: If you add #, ##, or ### as the first character on a new line containing friend, you can use larger sized friend. To try it out, send a message such as: '# :smile:'."
+                            id='request_list.help2'
+                            defaultMessage="Tip: If you add #, ##, or ### as the first character on a new line containing request, you can use larger sized request. To try it out, send a message such as: '# :smile:'."
                         />
                     </p>
                 </span> */}
                 <div className='backstage-list'>
-                    <table className='emoji-list__table'>
+                    <table className='request-list__table'>
                         <thead>
-                            <tr className='backstage-list__item emoji-list__table-header'>
-                                <th className='emoji-list__name'>
+                            <tr className='backstage-list__item request-list__table-header'>
+                                <th className='request-list__name'>
                                     <FormattedMessage
-                                        id='friends_list.name'
+                                        id='request_list.name'
                                         defaultMessage='Name'
                                     />
                                 </th>
-                                <th className='emoji-list__image'>
+                                <th className='request-list__image'>
                                     <FormattedMessage
-                                        id='friend_list.image'
+                                        id='request_list.image'
                                         defaultMessage='Image'
                                     />
                                 </th>
-                                <th className='emoji-list_actions'>
+                                {/* <th className='request-list__creator'>
                                     <FormattedMessage
-                                        id='friends_list.actions'
+                                        id='request_list.creator'
+                                        defaultMessage='Creator'
+                                    />
+                                </th> */}
+                                <th className='request-list_actions'>
+                                    <FormattedMessage
+                                        id='request_list.actions'
                                         defaultMessage='Actions'
                                     />
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {friends}
+                            {requests}
                         </tbody>
                     </table>
                 </div>

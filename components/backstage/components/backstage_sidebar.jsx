@@ -209,6 +209,39 @@ export default class BackstageSidebar extends React.PureComponent {
         );
     }
 
+    renderPendingRequestList() {
+        return (
+            <BackstageCategory
+                name='pending_request_list'
+                parentLink={'/' + this.props.team.name}
+                icon='fa-smile-o'
+                title={
+                    <FormattedMessage
+                        id='backstage_sidebar.pending-request-list'
+                        defaultMessage='My Pending Reuqests List'
+                    />
+                }
+            />
+        );
+    }
+
+
+    renderReceivedRequestList() {
+        return (
+            <BackstageCategory
+                name='received_request_list'
+                parentLink={'/' + this.props.team.name}
+                icon='fa-smile-o'
+                title={
+                    <FormattedMessage
+                        id='backstage_sidebar.received-request-list'
+                        defaultMessage='My Received Reuqests List'
+                    />
+                }
+            />
+        );
+    }
+
     render() {
         return (
             <div className='backstage-sidebar'>
@@ -217,6 +250,8 @@ export default class BackstageSidebar extends React.PureComponent {
                     {this.renderCustomEmoji()}
                     {this.renderPrivateEmoji()}
                     {this.renderFriendList()}
+                    {this.renderPendingRequestList()}
+                    {this.renderReceivedRequestList()}
                     {this.renderIntegrations()}
 
                 </ul>

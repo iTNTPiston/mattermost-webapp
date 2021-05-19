@@ -16,6 +16,8 @@ import Emoji from 'components/emoji';
 import EmojiPrivate from 'casualchat/components/emoji-private';
 import Friends from 'casualchat/components/friends';
 import AddEmoji from 'components/emoji/add_emoji';
+import Friend from 'casualchat/components/friends'
+import Request from 'casualchat/components/requests'
 import InstalledIncomingWebhooks from 'components/integrations/installed_incoming_webhooks';
 import AddIncomingWehook from 'components/integrations/add_incoming_webhook';
 import EditIncomingWebhook from 'components/integrations/edit_incoming_webhook';
@@ -181,6 +183,14 @@ export default class BackstageController extends React.PureComponent {
                             path={`${this.props.match.url}/confirm`}
                             component={ConfirmIntegration}
                         />
+
+                        <BackstageRoute
+                            extraProps={extraProps}
+                            exact={true}
+                            path={'/:team/friend_list'}
+                            component={Friend}
+                        />
+
                         <BackstageRoute
                             extraProps={extraProps}
                             exact={true}
@@ -210,7 +220,23 @@ export default class BackstageController extends React.PureComponent {
                             component={AddEmoji}
                         />
 
+<<<<<<< HEAD
 
+=======
+                        <BackstageRoute
+                            extraProps={extraProps}
+                            exact={true}
+                            path={'/:team/request_list_pending'}
+                            component={Request}
+                        />
+
+                        <BackstageRoute
+                            extraProps={extraProps}
+                            exact={true}
+                            path={'/:team/request_list_received'}
+                            component={Request}
+                        />
+>>>>>>> 1c262db16838ca2975c0d611d81aa1b9d60a4d38
 
                         <BackstageRoute
                             extraProps={extraProps}

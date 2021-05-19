@@ -10,6 +10,7 @@ import {isCustomEmoji} from 'mattermost-redux/utils/emoji_utils';
 import * as Utils from 'utils/utils.jsx';
 
 import {ExtRef} from './types';
+// import UserProfile from 'components/user_profile/user_profile';
 
 function getPrivateEmojisRoute() {
     return `${Client4.getEmojisRoute()}/private`;
@@ -172,17 +173,17 @@ export async function getExtChannelByExternalId(platform: string, externalId: st
     return result.channelId;
 }
 
-// export async function getFriends(userID: string, page: number, perPage: number, sort: string): Promise<UserProfile[]> {
-// const result = await Client4.doFetch<Emoji[]>(
-//     `${getFriendsRoute()}${buildQueryString({page, per_page: perPage, sort})}`,
-//     {method: 'get'},
-// );
-// if (result == null) {
-//     return Promise.resolve([]);
-// }
-// return Promise.resolve(result);
+export async function getFriends(userID: string, page: number, perPage: number, sort: string): Promise<UserProfile[]> {
+    const result = await Client4.doFetch<UserProfile[]>(
+        `${Client4.getUsersRoute()}${buildQueryString({page, per_page: perPage, sort})}`,
+        {method: 'get'},
+    );
+    if (result == null) {
+        return Promise.resolve([]);
+    }
+    return Promise.resolve(result);
 // return Promise.resolve([]);
-// }
+}
 
 export async function searchFriend(userID: string, term: string, options = {}): Promise<UserProfile[]> {
     //TODO: After backend is finished
@@ -220,7 +221,7 @@ export default {
     postToExtChannel,
     getExtChannelByExternalId,
 
-    // getFriends,
+    getFriends,
     searchFriend,
     deleteFriend,
 };
