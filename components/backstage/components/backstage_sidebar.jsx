@@ -202,45 +202,29 @@ export default class BackstageSidebar extends React.PureComponent {
                 title={
                     <FormattedMessage
                         id='backstage_sidebar.friend-list'
-                        defaultMessage='My Friends List'
+                        defaultMessage='Friends List'
                     />
                 }
             />
         );
     }
 
-    renderPendingRequestList() {
+    renderRequestList() {
         return (
             <BackstageCategory
-                name='pending_request_list'
+                name='request_list'
                 parentLink={'/' + this.props.team.name}
                 icon='fa-smile-o'
                 title={
                     <FormattedMessage
-                        id='backstage_sidebar.pending-request-list'
-                        defaultMessage='My Pending Reuqests List'
+                        id='backstage_sidebar.request-list'
+                        defaultMessage='Requests List'
                     />
                 }
             />
         );
     }
 
-
-    renderReceivedRequestList() {
-        return (
-            <BackstageCategory
-                name='received_request_list'
-                parentLink={'/' + this.props.team.name}
-                icon='fa-smile-o'
-                title={
-                    <FormattedMessage
-                        id='backstage_sidebar.received-request-list'
-                        defaultMessage='My Received Reuqests List'
-                    />
-                }
-            />
-        );
-    }
 
     render() {
         return (
@@ -250,8 +234,7 @@ export default class BackstageSidebar extends React.PureComponent {
                     {this.renderCustomEmoji()}
                     {this.renderPrivateEmoji()}
                     {this.renderFriendList()}
-                    {this.renderPendingRequestList()}
-                    {this.renderReceivedRequestList()}
+                    {this.renderRequestList()}
                     {this.renderIntegrations()}
 
                 </ul>

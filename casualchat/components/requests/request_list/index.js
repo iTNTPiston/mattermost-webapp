@@ -11,6 +11,7 @@ import {bindActionCreators} from 'redux';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 // import {getPrivateEmojis, searchPrivateEmojis} from 'casualchat/actions/emojis';
+import {getRequests,searchRequests} from 'casualchat/actions/emojis';
 
 import RequestList from 'casualchat/components/requests/request_list/request_list.jsx';
 

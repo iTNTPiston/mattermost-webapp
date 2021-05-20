@@ -207,6 +207,47 @@ export async function deleteFriend(friendId: string): Promise<any> {
     );
 }
 
+export async function getRequests(requestID: string, page: number, perPage: number, sort: string): Promise<UserProfile[]> {
+    // const result = await Client4.doFetch<UserProfile[]>(
+    //     `${Client4.getUsersRoute()}${buildQueryString({page, per_page: perPage, sort})}`,
+    //     {method: 'get'},
+    // );
+    // if (result == null) {
+    //     return Promise.resolve([]);
+    // }
+    // return Promise.resolve(result);
+    return Promise.resolve([]);
+}
+
+export async function searchRequest(requestID: string, term: string, options = {}): Promise<UserProfile[]> {
+    //TODO: After backend is finished
+    // return Client4.doFetch<CustomEmoji[]>(
+    //     `${Client4.getEmojisRoute()}/search`,
+    //     {method: 'post', body: JSON.stringify({term, ...options})},
+    // );
+    //console.log('userId =', userID);
+    //console.log('term =', term);
+    //console.log('options =', options);
+    if (requestID && term && options) {
+        //pass linter
+    }
+    return Promise.resolve([]);
+}
+
+export async function acceptRequest(requestId: string): Promise<any> {
+    return Client4.doFetch<any>(
+        `${Client4.getEmojiRoute(requestId)}`,
+        {method: 'delete'},
+    );
+}
+
+export async function deleteRequest(requestId: string): Promise<any> {
+    return Client4.doFetch<any>(
+        `${Client4.getEmojiRoute(requestId)}`,
+        {method: 'delete'},
+    );
+}
+
 export default {
     createPrivateEmoji,
     getEmojiUrl,
@@ -224,4 +265,9 @@ export default {
     getFriends,
     searchFriend,
     deleteFriend,
+
+    getRequests,
+    searchRequest,
+    acceptRequest,
+    deleteRequest,
 };

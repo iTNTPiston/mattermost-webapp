@@ -357,7 +357,13 @@ class MainMenu extends React.PureComponent {
                         id='friendList'
                         show={!this.props.mobile}
                         to={'/' + this.props.teamName + '/friend_list'}
-                        text={formatMessage({id: 'navbar_dropdown.friend-list', defaultMessage: 'My Friends List'})}
+                        text={formatMessage({id: 'navbar_dropdown.friend-list', defaultMessage: 'Friends List'})}
+                    />
+                    <Menu.ItemLink
+                        id='requestList'
+                        show={!this.props.mobile}
+                        to={'/' + this.props.teamName + '/request_list'}
+                        text={formatMessage({id: 'navbar_dropdown.request-list', defaultMessage: 'Requests List'})}
                     />
                 </Menu.Group>
                 <Menu.Group>
