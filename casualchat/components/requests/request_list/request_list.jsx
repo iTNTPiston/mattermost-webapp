@@ -47,8 +47,7 @@ export default class RequestList extends React.PureComponent {
             searchRequests: PropTypes.func.isRequired,
         }).isRequired,
 
-        // isPending
-        // isReceived
+        isPending: PropTypes.bool.isRequired,
     }
 
     constructor(props) {
@@ -67,14 +66,19 @@ export default class RequestList extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.props.actions.getRequests(0, REQUEST_PER_PAGE + 1, Request.SORT_BY_NAME, true).then(({data}) => {
-            this.setState({loading: false});
-            if (data && data.length < REQUEST_PER_PAGE) {
-                this.setState({
-                    missingPages: false,
-                    requestIds: data.map(({id}) => id),
-                });
-            }
+        // this.props.actions.getRequests(0, REQUEST_PER_PAGE + 1, Request.SORT_BY_NAME, true).then(({data}) => {
+        //     this.setState({loading: false});
+        //     if (data && data.length < REQUEST_PER_PAGE) {
+        //         this.setState({
+        //             missingPages: false,
+        //             requestIds: data.map(({id}) => id),
+        //         });
+        //     }
+        // });
+        this.setState({loading: false});
+        this.setState({
+            missingPages: false,
+            requestIds: [],
         });
     }
 
@@ -85,18 +89,21 @@ export default class RequestList extends React.PureComponent {
 
         const next = this.state.page + 1;
         this.setState({nextLoading: true});
-
-        this.props.actions.getRequests(next, REQUEST_PER_PAGE, Request.SORT_BY_NAME, true).then(({data}) => {
-            this.setState({page: next, nextLoading: false});
-            if (data && data.length < REQUEST_PER_PAGE) {
-                this.setState({
-                    missingPages: false,
-                    requestIds: data.map(({id}) => id),
-                });
-            }
-
-            this.props.scrollToTop();
+        this.setState({
+            missingPages: false,
+            requestIds: [],
         });
+        // this.props.actions.getRequests(next, REQUEST_PER_PAGE, Request.SORT_BY_NAME, true).then(({data}) => {
+        //     this.setState({page: next, nextLoading: false});
+        //     if (data && data.length < REQUEST_PER_PAGE) {
+        //         this.setState({
+        //             missingPages: false,
+        //             requestIds: data.map(({id}) => id),
+        //         });
+        //     }
+
+        //     this.props.scrollToTop();
+        // });
     }
 
     previousPage = (e) => {
@@ -134,6 +141,27 @@ export default class RequestList extends React.PureComponent {
                 this.setState({searchRequests: [], loading: false});
             }
         }, REQUEST_SEARCH_DELAY_MILLISECONDS);
+    }
+
+    onAcceptRequest = (requestId) => {
+        this.acceptFromSearch(requestId);
+        this.acceptFromIds(requestId);
+    }
+    // check?
+    acceptFromSearch = (requestId) => {
+        if (!this.state.searchReuqests) {
+            return;
+        }
+
+        this.setState({searchRquests: this.state.searchRequests.filter((id) => id !== requestId)});
+    }
+
+    acceptFromIds =(requestId) => {
+        if (!this.state.requestIds) {
+            return;
+        }
+
+        this.setState({requestIds: this.state.requestIds.filter((id) => id !== requestId)});
     }
 
     onDeleteRequest = (requestId) => {
@@ -194,6 +222,7 @@ export default class RequestList extends React.PureComponent {
                     <RequestListItem
                         key={'request_search_item' + requestId}
                         requestId={requestId}
+                        onAccept={this.onAcceptRequest}
                         onDelete={this.onDeleteRequest}
                     />,
                 );
@@ -208,6 +237,8 @@ export default class RequestList extends React.PureComponent {
                     <RequestListItem
                         key={'request_list_item' + requestId}
                         requestId={requestId}
+                        // requestStatus={requestStatus}
+                        onAccept={this.onAcceptRequest}
                         onDelete={this.onDeleteRequest}
                     />,
                 );
@@ -267,43 +298,31 @@ export default class RequestList extends React.PureComponent {
                         />
                     </div>
                 </div>
-                {/* <span className='backstage-list__help'>
+                <span className='backstage-list__help'>
                     <p>
                         <FormattedMessage
                             id='request_list.help'
-                            defaultMessage="Requests List are available to everyone on your server. Type ':' followed by two characters in a message box to bring up the request selection menu."
+                            defaultMessage="For received requests, you can accept or decline. For pending requests you sent, you can choose to delete. "
                         />
                     </p>
-                    <p>
-                        <FormattedMessage
-                            id='request_list.help2'
-                            defaultMessage="Tip: If you add #, ##, or ### as the first character on a new line containing request, you can use larger sized request. To try it out, send a message such as: '# :smile:'."
-                        />
-                    </p>
-                </span> */}
+                </span>
                 <div className='backstage-list'>
-                    <table className='request-list__table'>
+                    <table className='emoji-list__table'>
                         <thead>
                             <tr className='backstage-list__item request-list__table-header'>
-                                <th className='request-list__name'>
+                                <th className='emoji-list__name'>
                                     <FormattedMessage
                                         id='request_list.name'
                                         defaultMessage='Name'
                                     />
                                 </th>
-                                <th className='request-list__image'>
+                                <th className='emoji-list__status'>
                                     <FormattedMessage
-                                        id='request_list.image'
-                                        defaultMessage='Image'
+                                        id='request_list.status'
+                                        defaultMessage='Status'
                                     />
                                 </th>
-                                {/* <th className='request-list__creator'>
-                                    <FormattedMessage
-                                        id='request_list.creator'
-                                        defaultMessage='Creator'
-                                    />
-                                </th> */}
-                                <th className='request-list_actions'>
+                                <th className='emoji-list_actions'>
                                     <FormattedMessage
                                         id='request_list.actions'
                                         defaultMessage='Actions'
