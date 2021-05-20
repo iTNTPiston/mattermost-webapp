@@ -10,18 +10,20 @@ import PropTypes from 'prop-types';
 // import DeleteEmoji from 'casualchat/components/requests/delete_request_modal.jsx';
 // import AnyTeamPermissionGate from 'components/permissions_gates/any_team_permission_gate';
 import DeleteRequest from 'casualchat/components/requests/delete_request_modal.jsx';
+import AcceptRequest from 'casualchat/components/requests/accept_request_modal.jsx';
+
 
 export default class RequestListItem extends React.PureComponent {
     static propTypes = {
         request: PropTypes.object.isRequired,
-        currentUserId: PropTypes.string.isRequired,
-        creatorDisplayName: PropTypes.string.isRequired,
-        creatorUsername: PropTypes.string,
         currentTeam: PropTypes.object,
+        onAccept: PropTypes.func,
         onDelete: PropTypes.func,
         actions: PropTypes.shape({
             deleteRequest: PropTypes.func.isRequired,
+            acceptRequest: PropTypes.func.isRequired,
         }).isRequired,
+        isPending: PropTypes.bool.isRequired
     }
 
     static defaultProps = {
@@ -29,6 +31,13 @@ export default class RequestListItem extends React.PureComponent {
         currentUserId: '',
         currentTeam: {},
         creatorDisplayName: '',
+    }
+
+    handleAccept = () => {
+        if (this.props.onAccept) {
+            this.props.onAccept(this.props.request.id);
+        }
+        this.props.actions.acceptRequest(this.props.request.id);
     }
 
     handleDelete = () => {
@@ -40,20 +49,15 @@ export default class RequestListItem extends React.PureComponent {
 
     render() {
         const request = this.props.request;
-
-        // const creatorUsername = this.props.creatorUsername;
-        // let creatorDisplayName = this.props.creatorDisplayName;
-
-        // if (creatorUsername && creatorUsername !== creatorDisplayName) {
-        //     creatorDisplayName += ' (@' + creatorUsername + ')';
-        // }
-
+        const acceptButton = (
+            <AcceptRequest
+                onDelete={this.handleAccept}
+                isPending = {this.props.isPending}
+            />);
         const deleteButton = (
             <DeleteRequest
                 onDelete={this.handleDelete}
-
-                // isPrivate={this.props.isPrivate}
-                // isOwner={true}
+                isPending = {this.props.isPending}
             />);
 
 
@@ -61,18 +65,16 @@ export default class RequestListItem extends React.PureComponent {
         return (
             <tr className='backstage-list__item'>
                 <td className='request-list__name'>
-                    {':' + request.name + ':'} 
+                    {request.name} 
                 </td>
-                <td className='request-list__image'>
+                <td className='request-list__status'>
                     {/* <span
                         className='emoticon'
-                        style={{backgroundImage: 'url(' + Client4.getCustomEmojiImageUrl(emoji.id) + ')'}}
+                        style={{backgroundImage: 'url(' + Client4.getStatus(request.id) + ')'}}
                     /> */}
                 </td>
-                {/* <td className='emoji-list__creator'>
-                    {creatorDisplayName}
-                </td> */}
                 <td className='request-list-item_actions'>
+                    {acceptButton}
                     {deleteButton}
                 </td>
             </tr>

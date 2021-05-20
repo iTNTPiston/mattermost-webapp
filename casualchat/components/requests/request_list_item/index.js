@@ -8,17 +8,29 @@ import {getUser, getCurrentUserId} from 'mattermost-redux/selectors/entities/use
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 
 // import {removeEmojiAccess, deleteEmojiWithAccess} from 'casualchat/actions/emojis';
+import {acceptRequest,deleteRequest} from 'casualchat/actions/requests';
 
 import {getDisplayNameByUser} from 'utils/utils.jsx';
 
 import RequestListItem from 'casualchat/components/requests/request_list_item/request_list_item.jsx';
 
 function mapStateToProps(state, ownProps) {
-    const emoji = state.entities.emojis.customEmoji[ownProps.emojiId];
-    const creator = getUser(state, emoji.creator_id);
 
+    //TODO: get user and request
+    // cosnt currRequest = getRequest(state, ownProps.requestId);
+    // const anotherUser = getUser(state, ownProps.anotherId);
+    // const friend = {
+    //     name: getDisplayNameByUser(state, anotherUser),
+    //     id: ownProps.anotherId,
+    // }
+    // const rquest = {
+    //     id: ownProps.requestId,
+    //     status: currRequest.status,
+    //     anotherUser: another
+    // }
     return {
-        emoji,
+        // request,
+        // another,
         creatorDisplayName: getDisplayNameByUser(state, creator),
         creatorUsername: creator ? creator.username : '',
         currentUserId: getCurrentUserId(state),
@@ -29,7 +41,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
-
+            // acceptRequest,
             // deleteRequest,
         }, dispatch),
     };
