@@ -9,6 +9,7 @@ import {Link} from 'react-router-dom';
 import * as Utils from 'utils/utils.jsx';
 
 import FriendList from 'casualchat/components/friends/friend_list';
+import FriendAddModal from 'casualchat/components/friends/friend_add_modal';
 
 export default class FriendPage extends React.PureComponent {
     static propTypes = {
@@ -23,6 +24,13 @@ export default class FriendPage extends React.PureComponent {
         teamName: '',
         teamDisplayName: '',
         siteName: '',
+    }
+
+    constructor(props){
+        super(props);
+        this.state={
+            showAddFriendModal: false
+        }
     }
 
     componentDidMount() {
@@ -40,8 +48,17 @@ export default class FriendPage extends React.PureComponent {
     }
 
     render() {
+        let addFriendModal;
+        if (this.state.showAddFriendModal) {
+            addFriendModal = (
+                <FriendAddModal
+                    onModalDismissed={()=>this.setState({showAddFriendModal: false})}
+                />
+            );
+        }
         return (
             <div className='backstage-content emoji-list'>
+                 {addFriendModal}
                 <div className='backstage-header'>
                     <h1>
                         <FormattedMessage
@@ -50,20 +67,18 @@ export default class FriendPage extends React.PureComponent {
                         />
                     </h1>
 
-                    <Link
-                        className='add-link'
-                        to={'/' + this.props.teamName + '/'}
-                    >
+
                         <button
                             type='button'
-                            className='btn btn-primary'
+                            className='add-link btn btn-primary'
+                            onClick={()=>this.setState({showAddFriendModal: true})}
                         >
                             <FormattedMessage
                                 id='frient_list.add'
                                 defaultMessage='Add Friend'
                             />
                         </button>
-                    </Link>
+                    
 
                 </div>
                 <FriendList
